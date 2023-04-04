@@ -1,0 +1,39 @@
+{
+  "name": "back_end",
+  "version": "1.0.0",
+  "repository": "git@github.com:E-Commerce-M6/back_end.git",
+  "author": "None",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --ignore-watch node_modules src/server.ts",
+    "build": "tsc",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "test": "cross-env NODE_ENV=test SECRET_KEY=chavesecreta! jest --verbose --runInBand",
+    "start": "node dist/src/server.js"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/node": "^18.11.18",
+    "ts-node-dev": "^2.0.0"
+  },
+  "dependencies": {
+    "@types/uuid": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "8.5.1",
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.9.1",
+    "typeorm": "0.3.11",
+    "typescript": "^5.0.3",
+    "uuid": "^9.0.0",
+    "zod": "^3.21.4"
+  }
+}
