@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { ImagePoster } from "./imagePoster";
 
 export enum FuelType {
   DIESEL = "diesel",
@@ -53,4 +55,7 @@ export class Poster {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => ImagePoster, (image) => image.poster)
+  images: ImagePoster[];
 }
