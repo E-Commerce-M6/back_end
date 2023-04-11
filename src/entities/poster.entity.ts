@@ -41,7 +41,7 @@ export class Poster {
   @Column({ length: 50 })
   color: String;
 
-  @Column("integer")
+  @Column("decimal", { precision: 8, scale: 2 })
   fipe_price: number;
 
   @Column()
