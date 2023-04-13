@@ -1,3 +1,4 @@
 import deletePosterService from "./deletePoster.service";
+import updatePosterService from "./updatePoster.service";
 
-export { deletePosterService };
+export { createPosterService, updatePosterService, deletePosterService };

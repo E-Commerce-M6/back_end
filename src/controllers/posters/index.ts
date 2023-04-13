@@ -1,3 +1,5 @@
 import deletePosterController from "./deletePoster.controller";
+import updatePosterController from "./updatePoster.controller";
+import createPosterController from "./createPoster.controller";
 
-export { deletePosterController };
+export { createPosterController, updatePosterController, deletePosterController };
