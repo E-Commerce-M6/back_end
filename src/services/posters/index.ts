@@ -1,3 +1,3 @@
 import updatePosterService from "./updatePoster.service";
 
-export { updatePosterService };
+export { createPosterService, updatePosterService };
