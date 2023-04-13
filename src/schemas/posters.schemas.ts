@@ -25,4 +25,6 @@ const posterReturnSchema = posterCreateSchema.extend({
   updatedAt: z.date().nullish(),
 });
 
-export { posterCreateSchema, posterReturnSchema };
+const posterUpdateSchema = posterCreateSchema.partial();
+
+export { posterCreateSchema, posterReturnSchema, posterUpdateSchema };
