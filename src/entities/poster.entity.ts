@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   Column,
   CreateDateColumn,
   Entity,
@@ -35,14 +36,17 @@ export class Poster {
   })
   fuel_type: FuelType;
 
-  @Column("decimal", { precision: 6, scale: 3 })
+  @Column({ type: "numeric", default: 0 })
   kilometers: number;
 
   @Column({ length: 50 })
   color: String;
 
-  @Column("decimal", { precision: 8, scale: 2 })
+  @Column({ type: "decimal", precision: 9, scale: 2 })
   fipe_price: number;
+
+  @Column({ type: "decimal", precision: 9, scale: 2, default: 0 })
+  price: number;
 
   @Column()
   description: string;
@@ -58,4 +62,10 @@ export class Poster {
 
   @OneToMany(() => ImagePoster, (image) => image.poster)
   images: ImagePoster[];
+
+  @AfterLoad() _convertNumerics(): void {
+    this.kilometers = parseFloat(this.kilometers as any);
+    this.fipe_price = parseFloat(this.fipe_price as any);
+    this.price = parseFloat(this.price as any);
+  }
 }
