@@ -4,38 +4,54 @@ import { Poster } from "../../entities/poster.entity";
 import { Repository } from "typeorm";
 import { AppError } from "../../errors/AppError";
 
-const listPosterService = async (query: QueryString.ParsedQs): Promise<Array<Poster>> => {
-  const types = ["year", "fuel_type", "brand", "model", "kilometers", "color"];
+const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
+  const typesQuery = ["year", "fuel_type", "brand", "model", "kilometers", "color", "id"];
 
   let valueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "5000000";
   let valueMIN: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "0";
 
-  const { priceMAX, priceMIN } = query;
+  let { page, perPage, priceMAX, priceMIN, ...q } = query;
+
   if (query.priceMAX) {
     valueMAX = priceMAX;
   }
 
   if (query.priceMIN) {
-    valueMIN = priceMAX;
+    valueMIN = priceMIN;
   }
 
-  const options = {
-    where: {
-      ...query,
+  let realPage: number;
+  let realTake: number;
+
+  if (perPage) realTake = +perPage;
+  else {
+    perPage = "10";
+    realTake = 10;
+  }
+
+  if (page) realPage = +page === 1 ? 0 : (+page - 1) * realTake;
+  else {
+    realPage = 0;
+    page = "1";
+  }
+  const findOptions = {
+    take: realTake,
+    skip: realPage,
+    where: { ...q },
+    relations: {
+      images: true,
     },
   };
 
-  delete options.where.priceMAX;
-  delete options.where.priceMIN;
-
-  const filtredQuery = Object.keys(options.where).filter(
+  const filtredQuery = Object.keys(findOptions.where).filter(
     (ele) =>
-      types[0] !== ele &&
-      types[1] !== ele &&
-      types[2] !== ele &&
-      types[3] !== ele &&
-      types[4] !== ele &&
-      types[5] !== ele
+      typesQuery[0] !== ele &&
+      typesQuery[1] !== ele &&
+      typesQuery[2] !== ele &&
+      typesQuery[3] !== ele &&
+      typesQuery[4] !== ele &&
+      typesQuery[5] !== ele &&
+      typesQuery[6] !== ele
   );
 
   if (filtredQuery[0]) {
@@ -45,17 +61,40 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<Array<Pos
   const posterRepository: Repository<Poster> = AppDataSource.getRepository(Poster);
 
   if (!query) {
-    delete options.where;
+    delete findOptions.where;
   }
+
+  const posterCount = await posterRepository
+    .createQueryBuilder("poster")
+    .setFindOptions(findOptions)
+    .getCount();
 
   const posters = await posterRepository
     .createQueryBuilder("poster")
-    .setFindOptions(options)
+    .setFindOptions(findOptions)
     .andWhere("poster.price <= :valueMAX", { valueMAX: valueMAX })
     .andWhere("poster.price >= :valueMIN", { valueMIN: valueMIN })
+    .skip(findOptions.skip)
+    .take(findOptions.take)
     .getMany();
 
-  return posters;
+  const getQuery = () =>
+    Object.keys(q)
+      .map((key) => `${key}=${q[key]}`)
+      .join("&");
+  const qp: string = getQuery().length === 0 ? "" : `&${getQuery()}`;
+
+  return {
+    perPage: realTake,
+    page: +page || 1,
+    next:
+      posterCount > 10 * +page
+        ? `http://localhost:3099/posters?perPage=${realTake}&page=${+page + 1}${qp}`
+        : null,
+    prev:
+      +page > 1 ? `http://localhost:3099/posters?perPage=${realTake}&page=${+page - 1}${qp}` : null,
+    data: posters,
+  };
 };
 
 export default listPosterService;
