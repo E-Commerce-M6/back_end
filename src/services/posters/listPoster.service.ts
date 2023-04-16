@@ -5,7 +5,7 @@ import { Repository } from "typeorm";
 import { AppError } from "../../errors/AppError";
 
 const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
-  const typesQuery = ["year", "fuel_type", "brand", "model", "kilometers", "color", "id"];
+  const typesQuery = ["year", "fuel_type", "brand", "model", "kilometers", "color"];
 
   let valueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "5000000";
   let valueMIN: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "0";
@@ -23,20 +23,22 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
   let realPage: number;
   let realTake: number;
 
-  if (perPage) realTake = +perPage;
-  else {
+  realPage = Number(page);
+  realTake = Number(perPage);
+
+  if (!perPage || isNaN(realTake) || realTake < 1) {
     perPage = "10";
     realTake = 10;
   }
 
-  if (page) realPage = +page === 1 ? 0 : (+page - 1) * realTake;
-  else {
-    realPage = 0;
+  if (!page || isNaN(realPage) || realPage < 1) {
     page = "1";
+    realPage = 1;
   }
+
   const findOptions = {
     take: realTake,
-    skip: realPage,
+    skip: realPage * realTake - realTake,
     where: { ...q },
     relations: {
       images: true,
@@ -50,8 +52,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
       typesQuery[2] !== ele &&
       typesQuery[3] !== ele &&
       typesQuery[4] !== ele &&
-      typesQuery[5] !== ele &&
-      typesQuery[6] !== ele
+      typesQuery[5] !== ele
   );
 
   if (filtredQuery[0]) {
@@ -67,7 +68,13 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
   const posterCount = await posterRepository
     .createQueryBuilder("poster")
     .setFindOptions(findOptions)
+    .andWhere("poster.price <= :valueMAX", { valueMAX: valueMAX })
+    .andWhere("poster.price >= :valueMIN", { valueMIN: valueMIN })
     .getCount();
+
+  if (realPage > Math.ceil(posterCount / realTake) && realPage > 1) {
+    throw new AppError("Invalid page", 400);
+  }
 
   const posters = await posterRepository
     .createQueryBuilder("poster")
@@ -76,23 +83,33 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
     .andWhere("poster.price >= :valueMIN", { valueMIN: valueMIN })
     .skip(findOptions.skip)
     .take(findOptions.take)
+    .orderBy("poster.createdAt", "ASC")
     .getMany();
 
   const getQuery = () =>
     Object.keys(q)
       .map((key) => `${key}=${q[key]}`)
       .join("&");
+
   const qp: string = getQuery().length === 0 ? "" : `&${getQuery()}`;
+  const prevPage: string | null =
+    realPage == 1
+      ? null
+      : `http://localhost:3000/contact?page=${+realPage - 1}&perPage=${realTake}${
+          priceMAX ? `priceMAX=${priceMAX}` : ""
+        }${priceMIN ? `priceMIN=${priceMIN}` : ""}${qp}`;
+
+  const nextPage: string | null =
+    posterCount <= realTake * realPage
+      ? null
+      : `http://localhost:3000/contact?page=${realPage + 1}&perPage=${realTake}${
+          priceMAX ? `priceMAX=${priceMAX}` : ""
+        }${priceMIN ? `priceMIN=${priceMIN}` : ""}${qp}`;
 
   return {
-    perPage: realTake,
-    page: +page || 1,
-    next:
-      posterCount > 10 * +page
-        ? `http://localhost:3099/posters?perPage=${realTake}&page=${+page + 1}${qp}`
-        : null,
-    prev:
-      +page > 1 ? `http://localhost:3099/posters?perPage=${realTake}&page=${+page - 1}${qp}` : null,
+    prev: prevPage,
+    next: nextPage,
+    count: posterCount,
     data: posters,
   };
 };
