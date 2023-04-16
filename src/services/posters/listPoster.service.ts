@@ -10,7 +10,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
   let valueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "5000000";
   let valueMIN: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "0";
 
-  let { page, perPage, priceMAX, priceMIN, ...q } = query;
+  let { page, perPage, model, priceMAX, priceMIN, ...q } = query;
 
   if (query.priceMAX) {
     valueMAX = priceMAX;
@@ -70,6 +70,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
     .setFindOptions(findOptions)
     .andWhere("poster.price <= :valueMAX", { valueMAX: valueMAX })
     .andWhere("poster.price >= :valueMIN", { valueMIN: valueMIN })
+    .andWhere("poster.model ILIKE :model", { model: `%${model || ""}%` })
     .getCount();
 
   if (realPage > Math.ceil(posterCount / realTake) && realPage > 1) {
@@ -81,6 +82,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
     .setFindOptions(findOptions)
     .andWhere("poster.price <= :valueMAX", { valueMAX: valueMAX })
     .andWhere("poster.price >= :valueMIN", { valueMIN: valueMIN })
+    .andWhere("poster.model ILIKE :model", { model: `%${model || ""}%` })
     .skip(findOptions.skip)
     .take(findOptions.take)
     .orderBy("poster.createdAt", "ASC")
