@@ -3,11 +3,13 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { ImagePoster } from "./imagePoster";
+import { User } from "./user.entity";
 
 export enum FuelType {
   DIESEL = "diesel",
@@ -53,6 +55,9 @@ export class Poster {
 
   @Column({ default: false })
   is_published: boolean;
+
+  @ManyToOne(() => User, (user) => user.id, { onDelete: "CASCADE" })
+  user: User; 
 
   @CreateDateColumn()
   createdAt: Date;
