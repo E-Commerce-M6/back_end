@@ -11,26 +11,13 @@ const updatePosterService = async (
 ): Promise<IPosterReturnSchema> => {
   const posterRepository: Repository<Poster> = AppDataSource.getRepository(Poster);
   const imageRepository: Repository<ImagePoster> = AppDataSource.getRepository(ImagePoster);
-  const { images, ...data } = posterUpdateData;
 
-  // Imagens do anúncio
   await imageRepository.delete({
     poster: {
       id: posterId,
     },
   });
 
-  const imagesPoster = images.map(({ url }) => {
-    return {
-      url,
-      poster: {
-        id: posterId,
-      },
-    };
-  });
-  console.log(await imageRepository.insert(imagesPoster));
-
-  // Infos do anúncio
   const posterData = await posterRepository.findOne({
     where: {
       id: posterId,
@@ -42,7 +29,7 @@ const updatePosterService = async (
 
   const poster = posterRepository.create({
     ...posterData,
-    ...data,
+    ...posterUpdateData,
   });
 
   await posterRepository.save(poster);

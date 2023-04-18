@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ensureDataIsValidMiddleware } from "../middlewares";
+import { ensureDataIsValidMiddleware, ensurePosterExistsMiddleware } from "../middlewares";
 import { posterCreateSchema, posterUpdateSchema } from "../schemas/posters.schemas";
 import {
   createPosterController,
@@ -12,9 +12,14 @@ import {
 const posterRoutes: Router = Router();
 
 posterRoutes.post("", ensureDataIsValidMiddleware(posterCreateSchema), createPosterController);
-posterRoutes.patch("/:id", ensureDataIsValidMiddleware(posterUpdateSchema), updatePosterController);
-posterRoutes.delete("/:id", deletePosterController);
+posterRoutes.patch(
+  "/:id",
+  ensurePosterExistsMiddleware,
+  ensureDataIsValidMiddleware(posterUpdateSchema),
+  updatePosterController
+);
+posterRoutes.delete("/:id", ensurePosterExistsMiddleware, deletePosterController);
 posterRoutes.get("", listPosterController);
-posterRoutes.get("/:id", getPosterByIdController);
+posterRoutes.get("/:id", ensurePosterExistsMiddleware, getPosterByIdController);
 
 export default posterRoutes;
