@@ -1,4 +1,5 @@
 import {
+  AfterInsert,
   AfterLoad,
   Column,
   CreateDateColumn,
@@ -56,8 +57,8 @@ export class Poster {
   @Column({ default: false })
   is_published: boolean;
 
-  @ManyToOne(() => User, (user) => user.id, { onDelete: "CASCADE" })
-  user: User; 
+  @ManyToOne(() => User, (user) => user.posters, { onDelete: "CASCADE" })
+  user: User;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -65,10 +66,12 @@ export class Poster {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => ImagePoster, (image) => image.poster)
+  @OneToMany(() => ImagePoster, (image) => image.poster, { cascade: ["insert", "update"] })
   images: ImagePoster[];
 
-  @AfterLoad() _convertNumerics(): void {
+  @AfterLoad()
+  @AfterInsert()
+  _convertNumerics(): void {
     this.kilometers = parseFloat(this.kilometers as any);
     this.fipe_price = parseFloat(this.fipe_price as any);
     this.price = parseFloat(this.price as any);

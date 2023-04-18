@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
+import { User } from "./user.entity";
 
 @Entity("address")
 export class Address {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column({ length: 8 })
@@ -17,10 +18,13 @@ export class Address {
   @Column({ length: 127 })
   street: string;
 
-  @Column({ length: 20,nullable: true })
+  @Column({ length: 20, nullable: true })
   number?: string;
 
   @Column({ length: 127, nullable: true })
   complement?: string;
 
+  @OneToOne(() => User, (user) => user.address, { onDelete: "CASCADE" })
+  @JoinColumn()
+  user: User;
 }

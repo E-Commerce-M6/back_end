@@ -1,47 +1,58 @@
 import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
-} from "typeorm"
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { Address } from "./address.entity";
+import { Poster } from "./poster.entity";
 
 @Entity("user")
 export class User {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
-    @Column({ length: 127 })
-    name: string;
-    
-    @Column({ length: 50 })
-    email: string;
+  @Column({ length: 127 })
+  name: string;
 
-    @Column({ length: 127 })
-    password: string;
+  @Column({ length: 50, unique: true })
+  email: string;
 
-    @Column({ length: 11 })
-    cpf: string;
+  @Column({ length: 127 })
+  password: string;
 
-    @Column({ length: 13 })
-    phone: string;
+  @Column({ length: 11, unique: true })
+  cpf: string;
 
-    @Column()
-    birth_date: Date;
+  @Column({ length: 13 })
+  phone: string;
 
-    @Column()
-    description: string; 
+  @Column({ type: "date" })
+  birth_date: string;
 
-    @Column({ default: false })
-    is_seller: boolean;
+  @Column()
+  description: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @Column({ default: false })
+  is_seller: boolean;
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @DeleteDateColumn()
-    deletedAt: Date
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date;
+
+  @OneToOne(() => Address, (address) => address.user, { cascade: ["insert", "update"] })
+  address: Address;
+
+  @OneToMany(() => Poster, (poster) => poster.user)
+  posters: Poster[];
 }
