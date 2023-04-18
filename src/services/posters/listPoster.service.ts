@@ -85,7 +85,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
     .andWhere("poster.model ILIKE :model", { model: `%${model || ""}%` })
     .skip(findOptions.skip)
     .take(findOptions.take)
-    .orderBy("poster.createdAt", "ASC")
+    .orderBy("poster.createdAt", "DESC")
     .getMany();
 
   const getQuery = () =>
@@ -97,16 +97,16 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
   const prevPage: string | null =
     realPage == 1
       ? null
-      : `http://localhost:3000/contact?page=${+realPage - 1}&perPage=${realTake}${
+      : `http://localhost:3000/posters/?page=${+realPage - 1}&perPage=${realTake}${
           priceMAX ? `priceMAX=${priceMAX}` : ""
         }${priceMIN ? `priceMIN=${priceMIN}` : ""}${qp}`;
 
   const nextPage: string | null =
     posterCount <= realTake * realPage
       ? null
-      : `http://localhost:3000/contact?page=${realPage + 1}&perPage=${realTake}${
+      : `http://localhost:3000/posters/?page=${realPage + 1}&perPage=${realTake}${
           priceMAX ? `priceMAX=${priceMAX}` : ""
-        }${priceMIN ? `priceMIN=${priceMIN}` : ""}${qp}`;
+        }${priceMIN ? `priceMIN=${priceMIN}` : ""}${model ? `model=${model}` : ""}${qp}`;
 
   return {
     prev: prevPage,
