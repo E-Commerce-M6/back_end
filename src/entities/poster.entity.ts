@@ -1,13 +1,16 @@
 import {
+  AfterInsert,
   AfterLoad,
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { ImagePoster } from "./imagePoster";
+import { User } from "./user.entity";
 
 export enum FuelType {
   DIESEL = "diesel",
@@ -54,16 +57,21 @@ export class Poster {
   @Column({ default: false })
   is_published: boolean;
 
+  @ManyToOne(() => User, (user) => user.posters, { onDelete: "CASCADE" })
+  user: User;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany(() => ImagePoster, (image) => image.poster)
+  @OneToMany(() => ImagePoster, (image) => image.poster, { cascade: ["insert", "update"] })
   images: ImagePoster[];
 
-  @AfterLoad() _convertNumerics(): void {
+  @AfterLoad()
+  @AfterInsert()
+  _convertNumerics(): void {
     this.kilometers = parseFloat(this.kilometers as any);
     this.fipe_price = parseFloat(this.fipe_price as any);
     this.price = parseFloat(this.price as any);
