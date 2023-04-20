@@ -8,18 +8,20 @@ import {
   listPosterController,
   getPosterByIdController,
 } from "../controllers/posters";
+import ensureAuthMiddleware from "../middlewares/ensureAuth.middleware";
 
 const posterRoutes: Router = Router();
 
-posterRoutes.post("", ensureDataIsValidMiddleware(posterCreateSchema), createPosterController);
+posterRoutes.post("", ensureAuthMiddleware, ensureDataIsValidMiddleware(posterCreateSchema), createPosterController);
 posterRoutes.patch(
   "/:id",
+  ensureAuthMiddleware,
   ensurePosterExistsMiddleware,
   ensureDataIsValidMiddleware(posterUpdateSchema),
   updatePosterController
 );
-posterRoutes.delete("/:id", ensurePosterExistsMiddleware, deletePosterController);
-posterRoutes.get("", listPosterController);
-posterRoutes.get("/:id", ensurePosterExistsMiddleware, getPosterByIdController);
+posterRoutes.delete("/:id", ensureAuthMiddleware, ensurePosterExistsMiddleware, deletePosterController);
+posterRoutes.get("", ensureAuthMiddleware, listPosterController);
+posterRoutes.get("/:id", ensureAuthMiddleware, ensurePosterExistsMiddleware, getPosterByIdController);
 
 export default posterRoutes;
