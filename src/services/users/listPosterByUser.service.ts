@@ -31,8 +31,13 @@ const listPosterByUserService = async (
   const posterRepo = AppDataSource.getRepository(Poster);
   const userRepo = AppDataSource.getRepository(User);
 
-  const findedUser = await userRepo.findOneBy({
-    id: id,
+  const findedUser = await userRepo.findOne({
+    where: {
+      id: id,
+    },
+    relations: {
+      address: true,
+    },
   });
 
   if (!findedUser.is_seller) {
@@ -76,7 +81,7 @@ const listPosterByUserService = async (
     prev: prevPage,
     next: nextPage,
     count: userPostListCount,
-    userData: userReturnSchema.parse(findedUser),
+    sellerData: userReturnSchema.parse(findedUser),
     data: userPostList,
   };
 };

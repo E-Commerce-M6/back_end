@@ -7,7 +7,7 @@ type IUserCreate = z.infer<typeof userCreateSchema>;
 type IUserReturn = z.infer<typeof userReturnSchema>;
 
 interface IPostListByUser extends IPosterPagination {
-  userData: IUserReturn;
+  sellerData: IUserReturn;
 }
 
 export { IUserCreate, IUserReturn, IPostListByUser };
