@@ -14,4 +14,4 @@ interface IPosterPagination {
   data: Poster[];
 }
 
-export { IPosterCreateSchema, IPosterReturnSchema, IPosterUpdateSchema };
+export { IPosterCreateSchema, IPosterReturnSchema, IPosterUpdateSchema, IPosterPagination };
