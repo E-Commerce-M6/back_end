@@ -3,8 +3,9 @@ import AppDataSource from "../../data-source";
 import { Poster } from "../../entities/poster.entity";
 import { Repository } from "typeorm";
 import { AppError } from "../../errors/AppError";
+import { IPosterPagination } from "../../interfaces/posters.interfaces";
 
-const listPosterService = async (query: QueryString.ParsedQs): Promise<any> => {
+const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPagination> => {
   const typesQuery = ["year", "fuel_type", "brand", "model", "kilometers", "color"];
 
   let valueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "5000000";
