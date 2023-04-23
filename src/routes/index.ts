@@ -1,3 +1,5 @@
 import posterRoutes from "./posters.routes";
+import usersRoutes from "./users.routes";
+import loginRoutes from "./login.routes";
 
-export { posterRoutes };
+export { posterRoutes, usersRoutes, loginRoutes };

@@ -1,4 +1,6 @@
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -11,6 +13,7 @@ import {
 } from "typeorm";
 import { Address } from "./address.entity";
 import { Poster } from "./poster.entity";
+import { getRounds, hashSync } from "bcryptjs";
 
 @Entity("user")
 export class User {
@@ -55,4 +58,13 @@ export class User {
 
   @OneToMany(() => Poster, (poster) => poster.user)
   posters: Poster[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  hashPassword() {
+    const isEncrypted = getRounds(this.password);
+    if (!isEncrypted) {
+      this.password = hashSync(this.password, 10);
+    }
+  }
 }
