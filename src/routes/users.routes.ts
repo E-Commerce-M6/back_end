@@ -1,15 +1,15 @@
 import { Router } from "express";
 import { createUserController, listPosterByUserController } from "../controllers/users";
-import { ensureDataIsValidMiddleware, ensureEmailNotUsedMiddleware } from "../middlewares";
+import { ensureDataIsValidMiddleware, ensureEmailOrCpfNotUsedMiddleware } from "../middlewares";
 import { userCreateSchema } from "../schemas/users.schemas";
-import { ensureUserExistsMiddleware } from "../middlewares/users";
+import { ensureUserExistsMiddleware } from "../middlewares";
 
-const usersRoutes = Router();
+const usersRoutes: Router = Router();
 
 usersRoutes.post(
   "",
   ensureDataIsValidMiddleware(userCreateSchema),
-  ensureEmailNotUsedMiddleware,
+  ensureEmailOrCpfNotUsedMiddleware,
   createUserController
 );
 usersRoutes.get("/:id/posters", ensureUserExistsMiddleware, listPosterByUserController);
