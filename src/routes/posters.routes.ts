@@ -44,12 +44,7 @@ posterRoutes.delete(
   deletePosterController
 );
 
-posterRoutes.get("", ensureAuthMiddleware, listPosterController);
-posterRoutes.get(
-  "/:id",
-  ensureAuthMiddleware,
-  ensurePosterExistsMiddleware,
-  getPosterByIdController
-);
+posterRoutes.get("", listPosterController);
+posterRoutes.get("/:id", ensurePosterExistsMiddleware, getPosterByIdController);
 
 export default posterRoutes;
