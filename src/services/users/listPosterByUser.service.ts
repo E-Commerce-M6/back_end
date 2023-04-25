@@ -62,6 +62,7 @@ const listPosterByUserService = async (
     },
     relations: {
       user: false,
+      images: true,
     },
   });
 
