@@ -38,4 +38,14 @@ const userCreateSchema = userReturnSchema
     address: addressCreateSchema.omit({ id: true }),
   });
 
-export { userCreateSchema, userReturnSchema };
+const userUpdateSchema = userCreateSchema
+  .omit({
+    is_seller: true,
+    address: true,
+  })
+  .extend({
+    address: addressCreateSchema.partial(),
+  })
+  .partial();
+
+export { userCreateSchema, userReturnSchema, userUpdateSchema };
