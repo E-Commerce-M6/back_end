@@ -44,6 +44,9 @@ export class User {
   @Column({ default: false })
   is_seller: boolean;
 
+  @Column({ nullable: true })
+  reset_token?: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
