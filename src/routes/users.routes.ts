@@ -8,12 +8,16 @@ import {
   ensureAuthMiddleware,
   ensureDataIsValidMiddleware,
   ensureEmailOrCpfNotUsedMiddleware,
+  ensureUserExistsMiddleware,
 } from "../middlewares";
 import { userCreateSchema, userUpdateSchema } from "../schemas/users.schemas";
-import { ensureUserExistsMiddleware } from "../middlewares";
 import updateUserController from "../controllers/users/updateUser.controller";
+import deleteUserController from "./../controllers/users/deleteUser.controller";
 
 const usersRoutes: Router = Router();
+
+usersRoutes.get("/:id/posters", ensureUserExistsMiddleware, listPosterByUserController);
+usersRoutes.get("/profile", ensureAuthMiddleware, getUserByTokenController);
 
 usersRoutes.post(
   "",
@@ -22,12 +26,11 @@ usersRoutes.post(
   createUserController
 );
 usersRoutes.patch(
-  "",
+  "/:id",
   ensureAuthMiddleware,
   ensureDataIsValidMiddleware(userUpdateSchema),
   updateUserController
 );
-usersRoutes.get("/:id/posters", ensureUserExistsMiddleware, listPosterByUserController);
-usersRoutes.get("/profile", ensureAuthMiddleware, getUserByTokenController);
+usersRoutes.delete("/:id", ensureAuthMiddleware, ensureUserExistsMiddleware, deleteUserController);
 
 export default usersRoutes;
