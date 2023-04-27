@@ -7,22 +7,34 @@ import { hashSync } from "bcryptjs";
 const resetPasswordService = async (password: string, resetToken: string) => {
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-  try {
-    const user = await userRepository.findOneBy({ reset_token: resetToken });
+  const user = await userRepository.findOneBy({ reset_token: resetToken });
 
-    if (!user) {
-      throw new AppError("User not found", 404);
-    }
-
-    const updatedUser = userRepository.create({
-      ...user,
-      password: hashSync(password, 10),
-      reset_token: null,
-    });
-    await userRepository.save(updatedUser);
-  } catch (error) {
-    throw new AppError("Invalid token", 400);
+  if (!user) {
+    throw new AppError("User not found", 404);
   }
+
+  const resetDate = user.reset_token_date
+    .toString()
+    .replace(/-/g, "/")
+    .split("/")
+    .reverse()
+    .join("/");
+  const dateNow = new Date().toLocaleDateString();
+
+  if (resetDate !== dateNow) {
+    throw new AppError(
+      "Data do token expirada, por favor solicite o envio ao email novamente",
+      401
+    );
+  }
+
+  const updatedUser = userRepository.create({
+    ...user,
+    password: hashSync(password, 10),
+    reset_token: null,
+    reset_token_date: null,
+  });
+  await userRepository.save(updatedUser);
 };
 
 export default resetPasswordService;

@@ -19,8 +19,13 @@ const sendResetEmailPasswordService = async (email: string, protocol: string, ho
   }
 
   const resetToken = randomUUID();
+  const resetDate = new Date().toLocaleDateString();
 
-  const updatedUser = userRepository.create({ ...user, reset_token: resetToken });
+  const updatedUser = userRepository.create({
+    ...user,
+    reset_token: resetToken,
+    reset_token_date: resetDate,
+  });
   await userRepository.save(updatedUser);
 
   const emailTemplateReset = resetPasswordTemplate(email, user.name, protocol, host, resetToken);

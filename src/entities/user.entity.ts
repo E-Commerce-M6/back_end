@@ -47,6 +47,9 @@ export class User {
   @Column({ nullable: true })
   reset_token?: string;
 
+  @Column({ nullable: true, type: "date" })
+  reset_token_date?: Date;
+
   @CreateDateColumn()
   createdAt: Date;
 
