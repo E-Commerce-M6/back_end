@@ -14,4 +14,18 @@ interface IPosterPagination {
   data: Poster[];
 }
 
-export { IPosterCreateSchema, IPosterReturnSchema, IPosterUpdateSchema, IPosterPagination };
+interface IPosterFilters {
+  brands: string[];
+  models: string[];
+  colors: string[];
+  years: string[];
+  fuel_types: string[];
+}
+
+export type {
+  IPosterCreateSchema,
+  IPosterReturnSchema,
+  IPosterUpdateSchema,
+  IPosterPagination,
+  IPosterFilters,
+};

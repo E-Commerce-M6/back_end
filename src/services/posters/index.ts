@@ -3,6 +3,7 @@ import deletePosterService from "./deletePoster.service";
 import updatePosterService from "./updatePoster.service";
 import listPosterService from "./listPoster.service";
 import getPosterByIdService from "./getPosterById.service";
+import getPosterFiltersService from "./getPosterFilters.service";
 
 export {
   createPosterService,
@@ -10,4 +11,5 @@ export {
   deletePosterService,
   listPosterService,
   getPosterByIdService,
+  getPosterFiltersService,
 };
