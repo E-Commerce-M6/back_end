@@ -13,6 +13,7 @@ import {
   deletePosterController,
   listPosterController,
   getPosterByIdController,
+  getPosterFiltersController,
 } from "../controllers/posters";
 
 const posterRoutes: Router = Router();
@@ -45,6 +46,7 @@ posterRoutes.delete(
 );
 
 posterRoutes.get("", listPosterController);
+posterRoutes.get("/filters", getPosterFiltersController);
 posterRoutes.get("/:id", ensurePosterExistsMiddleware, getPosterByIdController);
 
 export default posterRoutes;
