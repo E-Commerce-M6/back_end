@@ -1,26 +1,25 @@
 import QueryString from "qs";
 import AppDataSource from "../../data-source";
 import { FuelType, Poster } from "../../entities/poster.entity";
-import { AppError } from "../../errors/AppError";
 import { IPosterFilters } from "../../interfaces/posters.interfaces";
+import { filterQuerySchema } from "../../schemas/posters.schemas";
 
 const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPosterFilters> => {
-  let { ...q } = query;
-  const expectedQuerys = ["brand", "model", "color", "year", "fuel"];
+  let { ...q } = filterQuerySchema.parse(query);
+
   const postRepo = AppDataSource.getRepository(Poster);
-
-  const validQuery = Object.keys(q).every((el) => expectedQuerys.includes(el));
-
-  if (!validQuery) {
-    throw new AppError("query paramns is wrong", 400);
-  }
 
   const brands: { poster_brand: string }[] = await postRepo
     .createQueryBuilder("poster")
     .select("poster.brand")
     .setFindOptions({
       where: {
-        fuel_type: FuelType[`${String(q.fuel).toUpperCase()}`],
+        fuel_type:
+          FuelType[
+            `${String(q.fuel)
+              .replace(/[ìíîï]/g, "i")
+              .toUpperCase()}`
+          ],
       },
     })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })
@@ -35,7 +34,12 @@ const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPo
     .select("poster.model")
     .setFindOptions({
       where: {
-        fuel_type: FuelType[`${String(q.fuel).toUpperCase()}`],
+        fuel_type:
+          FuelType[
+            `${String(q.fuel)
+              .replace(/[ìíîï]/g, "i")
+              .toUpperCase()}`
+          ],
       },
     })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })
@@ -50,7 +54,12 @@ const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPo
     .select("poster.color")
     .setFindOptions({
       where: {
-        fuel_type: FuelType[`${String(q.fuel).toUpperCase()}`],
+        fuel_type:
+          FuelType[
+            `${String(q.fuel)
+              .replace(/[ìíîï]/g, "i")
+              .toUpperCase()}`
+          ],
       },
     })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })
@@ -65,7 +74,12 @@ const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPo
     .select("poster.year")
     .setFindOptions({
       where: {
-        fuel_type: FuelType[`${String(q.fuel).toUpperCase()}`],
+        fuel_type:
+          FuelType[
+            `${String(q.fuel)
+              .replace(/[ìíîï]/g, "i")
+              .toUpperCase()}`
+          ],
       },
     })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })
@@ -80,7 +94,12 @@ const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPo
     .select("poster.fuel_type")
     .setFindOptions({
       where: {
-        fuel_type: FuelType[`${String(q.fuel).toUpperCase()}`],
+        fuel_type:
+          FuelType[
+            `${String(q.fuel)
+              .replace(/[ìíîï]/g, "i")
+              .toUpperCase()}`
+          ],
       },
     })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })

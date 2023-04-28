@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { FuelType } from "../entities/poster.entity";
+import { userReturnSchema } from "./users.schemas";
 
 const posterCreateSchema = z.object({
   brand: z.string().max(50),
@@ -27,4 +28,48 @@ const posterReturnSchema = posterCreateSchema.extend({
 
 const posterUpdateSchema = posterCreateSchema.partial();
 
-export { posterCreateSchema, posterReturnSchema, posterUpdateSchema };
+const posterWithUserReturnSchema = posterCreateSchema.extend({
+  id: z.string(),
+  createdAt: z.date().nullish(),
+  updatedAt: z.date().nullish(),
+  user: userReturnSchema.omit({ address: true }),
+});
+
+const queryPaginateSchema = z
+  .object({
+    page: z.string().default("1"),
+    perPage: z.string().default("12"),
+  })
+  .partial();
+
+const filterQuerySchema = z
+  .object({
+    year: z.string(),
+    fuel: z.string(),
+    brand: z.string(),
+    model: z.string(),
+    color: z.string(),
+  })
+  .partial();
+
+const posterQuerySchema = queryPaginateSchema
+  .extend({
+    kilometers: z.number(),
+    priceMAX: z.string(),
+    priceMIN: z.string(),
+    year: z.string(),
+    fuel: z.string(),
+    brand: z.string(),
+    model: z.string(),
+    color: z.string(),
+  })
+  .partial();
+
+export {
+  posterCreateSchema,
+  posterReturnSchema,
+  posterUpdateSchema,
+  posterWithUserReturnSchema,
+  posterQuerySchema,
+  filterQuerySchema,
+};
