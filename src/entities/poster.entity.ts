@@ -43,7 +43,7 @@ export class Poster {
   kilometers: number;
 
   @Column({ length: 50 })
-  color: String;
+  color: string;
 
   @Column({ type: "decimal", precision: 9, scale: 2 })
   fipe_price: number;

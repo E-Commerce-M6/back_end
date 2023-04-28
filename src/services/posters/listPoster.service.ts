@@ -1,17 +1,16 @@
 import QueryString from "qs";
 import AppDataSource from "../../data-source";
-import { Poster } from "../../entities/poster.entity";
+import { FuelType, Poster } from "../../entities/poster.entity";
 import { Repository } from "typeorm";
 import { AppError } from "../../errors/AppError";
 import { IPosterPagination } from "../../interfaces/posters.interfaces";
+import { posterWithUserReturnSchema, posterQuerySchema } from "../../schemas/posters.schemas";
 
 const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPagination> => {
-  const typesQuery = ["year", "fuel_type", "brand", "model", "kilometers", "color"];
-
   let valueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "5000000";
   let valueMIN: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "0";
 
-  let { page, perPage, model, priceMAX, priceMIN, ...q } = query;
+  let { page, perPage, model, priceMAX, priceMIN, fuel, ...q } = posterQuerySchema.parse(query);
 
   if (query.priceMAX) {
     valueMAX = priceMAX;
@@ -40,25 +39,20 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
   const findOptions = {
     take: realTake,
     skip: realPage * realTake - realTake,
-    where: { ...q },
+    where: {
+      ...q,
+      fuel_type:
+        FuelType[
+          `${String(fuel)
+            .replace(/[ìíîï]/g, "i")
+            .toUpperCase()}`
+        ],
+    },
     relations: {
       images: true,
+      user: true,
     },
   };
-
-  const filtredQuery = Object.keys(findOptions.where).filter(
-    (ele) =>
-      typesQuery[0] !== ele &&
-      typesQuery[1] !== ele &&
-      typesQuery[2] !== ele &&
-      typesQuery[3] !== ele &&
-      typesQuery[4] !== ele &&
-      typesQuery[5] !== ele
-  );
-
-  if (filtredQuery[0]) {
-    throw new AppError("query paramns is wrong", 400);
-  }
 
   const posterRepository: Repository<Poster> = AppDataSource.getRepository(Poster);
 
@@ -86,6 +80,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
     .andWhere("poster.model ILIKE :model", { model: `%${model || ""}%` })
     .skip(findOptions.skip)
     .take(findOptions.take)
+    .leftJoinAndSelect("poster.user", "user")
     .orderBy("poster.createdAt", "DESC")
     .getMany();
 
@@ -113,7 +108,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
     prev: prevPage,
     next: nextPage,
     count: posterCount,
-    data: posters,
+    data: posters.map((poster) => posterWithUserReturnSchema.parse(poster)),
   };
 };
 
