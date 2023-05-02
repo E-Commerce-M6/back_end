@@ -5,7 +5,28 @@ import { IPosterFilters } from "../../interfaces/posters.interfaces";
 import { filterQuerySchema } from "../../schemas/posters.schemas";
 
 const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPosterFilters> => {
-  let { ...q } = filterQuerySchema.parse(query);
+  let priceValueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] =
+    "999999999";
+  let priceValueMIN: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "0";
+  let kmValueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "999999999";
+  let kmValueMIN: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "0";
+
+  let { fuel, published, priceMAX, priceMIN, kmMAX, kmMIN, ...q } = filterQuerySchema.parse(query);
+
+  if (priceMAX && Number(priceMAX) >= 0) {
+    priceValueMAX = priceMAX;
+  }
+
+  if (priceMIN && Number(priceMIN) >= 0) {
+    priceValueMIN = priceMIN;
+  }
+  if (kmMAX && Number(kmMAX) >= 0) {
+    kmValueMAX = kmMAX;
+  }
+
+  if (kmMIN && Number(kmMIN) >= 0) {
+    kmValueMIN = kmMIN;
+  }
 
   const postRepo = AppDataSource.getRepository(Poster);
 
@@ -14,14 +35,19 @@ const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPo
     .select("poster.brand")
     .setFindOptions({
       where: {
+        is_published: published,
         fuel_type:
           FuelType[
-            `${String(q.fuel)
+            `${String(fuel)
               .replace(/[ìíîï]/g, "i")
               .toUpperCase()}`
           ],
       },
     })
+    .andWhere("poster.price <= :priceValueMAX", { priceValueMAX: priceValueMAX })
+    .andWhere("poster.price >= :priceValueMIN", { priceValueMIN: priceValueMIN })
+    .andWhere("poster.kilometers <= :kmValueMAX", { kmValueMAX: kmValueMAX })
+    .andWhere("poster.kilometers >= :kmValueMIN", { kmValueMIN: kmValueMIN })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })
     .andWhere("poster.color ILIKE :color", { color: `%${q.color || ""}%` })
     .andWhere("poster.model ILIKE :model", { model: `%${q.model || ""}%` })
@@ -34,14 +60,19 @@ const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPo
     .select("poster.model")
     .setFindOptions({
       where: {
+        is_published: published,
         fuel_type:
           FuelType[
-            `${String(q.fuel)
+            `${String(fuel)
               .replace(/[ìíîï]/g, "i")
               .toUpperCase()}`
           ],
       },
     })
+    .andWhere("poster.price <= :priceValueMAX", { priceValueMAX: priceValueMAX })
+    .andWhere("poster.price >= :priceValueMIN", { priceValueMIN: priceValueMIN })
+    .andWhere("poster.kilometers <= :kmValueMAX", { kmValueMAX: kmValueMAX })
+    .andWhere("poster.kilometers >= :kmValueMIN", { kmValueMIN: kmValueMIN })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })
     .andWhere("poster.color ILIKE :color", { color: `%${q.color || ""}%` })
     .andWhere("poster.model ILIKE :model", { model: `%${q.model || ""}%` })
@@ -54,14 +85,19 @@ const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPo
     .select("poster.color")
     .setFindOptions({
       where: {
+        is_published: published,
         fuel_type:
           FuelType[
-            `${String(q.fuel)
+            `${String(fuel)
               .replace(/[ìíîï]/g, "i")
               .toUpperCase()}`
           ],
       },
     })
+    .andWhere("poster.price <= :priceValueMAX", { priceValueMAX: priceValueMAX })
+    .andWhere("poster.price >= :priceValueMIN", { priceValueMIN: priceValueMIN })
+    .andWhere("poster.kilometers <= :kmValueMAX", { kmValueMAX: kmValueMAX })
+    .andWhere("poster.kilometers >= :kmValueMIN", { kmValueMIN: kmValueMIN })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })
     .andWhere("poster.color ILIKE :color", { color: `%${q.color || ""}%` })
     .andWhere("poster.model ILIKE :model", { model: `%${q.model || ""}%` })
@@ -74,14 +110,19 @@ const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPo
     .select("poster.year")
     .setFindOptions({
       where: {
+        is_published: published,
         fuel_type:
           FuelType[
-            `${String(q.fuel)
+            `${String(fuel)
               .replace(/[ìíîï]/g, "i")
               .toUpperCase()}`
           ],
       },
     })
+    .andWhere("poster.price <= :priceValueMAX", { priceValueMAX: priceValueMAX })
+    .andWhere("poster.price >= :priceValueMIN", { priceValueMIN: priceValueMIN })
+    .andWhere("poster.kilometers <= :kmValueMAX", { kmValueMAX: kmValueMAX })
+    .andWhere("poster.kilometers >= :kmValueMIN", { kmValueMIN: kmValueMIN })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })
     .andWhere("poster.color ILIKE :color", { color: `%${q.color || ""}%` })
     .andWhere("poster.model ILIKE :model", { model: `%${q.model || ""}%` })
@@ -94,14 +135,19 @@ const getPosterFiltersService = async (query: QueryString.ParsedQs): Promise<IPo
     .select("poster.fuel_type")
     .setFindOptions({
       where: {
+        is_published: published,
         fuel_type:
           FuelType[
-            `${String(q.fuel)
+            `${String(fuel)
               .replace(/[ìíîï]/g, "i")
               .toUpperCase()}`
           ],
       },
     })
+    .andWhere("poster.price <= :priceValueMAX", { priceValueMAX: priceValueMAX })
+    .andWhere("poster.price >= :priceValueMIN", { priceValueMIN: priceValueMIN })
+    .andWhere("poster.kilometers <= :kmValueMAX", { kmValueMAX: kmValueMAX })
+    .andWhere("poster.kilometers >= :kmValueMIN", { kmValueMIN: kmValueMIN })
     .andWhere("poster.year ILIKE :year", { year: `%${q.year || ""}%` })
     .andWhere("poster.color ILIKE :color", { color: `%${q.color || ""}%` })
     .andWhere("poster.model ILIKE :model", { model: `%${q.model || ""}%` })

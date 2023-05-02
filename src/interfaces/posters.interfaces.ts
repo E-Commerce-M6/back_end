@@ -32,4 +32,5 @@ export type {
   IPosterUpdateSchema,
   IPosterPagination,
   IPosterFilters,
+  IPosterReturnWithUserSchema,
 };

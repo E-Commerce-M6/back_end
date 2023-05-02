@@ -7,17 +7,28 @@ import { IPosterPagination } from "../../interfaces/posters.interfaces";
 import { posterWithUserReturnSchema, posterQuerySchema } from "../../schemas/posters.schemas";
 
 const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPagination> => {
-  let valueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "5000000";
-  let valueMIN: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "0";
+  let priceValueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] =
+    "999999999";
+  let priceValueMIN: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "0";
+  let kmValueMAX: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "999999999";
+  let kmValueMIN: string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[] = "0";
 
-  let { page, perPage, model, priceMAX, priceMIN, fuel, ...q } = posterQuerySchema.parse(query);
+  let { page, perPage, model, priceMAX, priceMIN, fuel, published, kmMAX, kmMIN, ...q } =
+    posterQuerySchema.parse(query);
 
-  if (query.priceMAX) {
-    valueMAX = priceMAX;
+  if (priceMAX && Number(priceMAX) >= 0) {
+    priceValueMAX = priceMAX;
   }
 
-  if (query.priceMIN) {
-    valueMIN = priceMIN;
+  if (priceMIN && Number(priceMIN) >= 0) {
+    priceValueMIN = priceMIN;
+  }
+  if (kmMAX && Number(kmMAX) >= 0) {
+    kmValueMAX = kmMAX;
+  }
+
+  if (kmMIN && Number(kmMIN) >= 0) {
+    kmValueMIN = kmMIN;
   }
 
   let realPage: number;
@@ -41,6 +52,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
     skip: realPage * realTake - realTake,
     where: {
       ...q,
+      is_published: published,
       fuel_type:
         FuelType[
           `${String(fuel)
@@ -63,8 +75,10 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
   const posterCount = await posterRepository
     .createQueryBuilder("poster")
     .setFindOptions(findOptions)
-    .andWhere("poster.price <= :valueMAX", { valueMAX: valueMAX })
-    .andWhere("poster.price >= :valueMIN", { valueMIN: valueMIN })
+    .andWhere("poster.price <= :priceValueMAX", { priceValueMAX: priceValueMAX })
+    .andWhere("poster.price >= :priceValueMIN", { priceValueMIN: priceValueMIN })
+    .andWhere("poster.kilometers <= :kmValueMAX", { kmValueMAX: kmValueMAX })
+    .andWhere("poster.kilometers >= :kmValueMIN", { kmValueMIN: kmValueMIN })
     .andWhere("poster.model ILIKE :model", { model: `%${model || ""}%` })
     .getCount();
 
@@ -75,8 +89,10 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
   const posters = await posterRepository
     .createQueryBuilder("poster")
     .setFindOptions(findOptions)
-    .andWhere("poster.price <= :valueMAX", { valueMAX: valueMAX })
-    .andWhere("poster.price >= :valueMIN", { valueMIN: valueMIN })
+    .andWhere("poster.price <= :priceValueMAX", { priceValueMAX: priceValueMAX })
+    .andWhere("poster.price >= :priceValueMIN", { priceValueMIN: priceValueMIN })
+    .andWhere("poster.kilometers <= :kmValueMAX", { kmValueMAX: kmValueMAX })
+    .andWhere("poster.kilometers >= :kmValueMIN", { kmValueMIN: kmValueMIN })
     .andWhere("poster.model ILIKE :model", { model: `%${model || ""}%` })
     .skip(findOptions.skip)
     .take(findOptions.take)
