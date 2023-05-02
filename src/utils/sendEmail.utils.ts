@@ -49,7 +49,9 @@ const resetPasswordTemplate = (
   });
 
   const resetPasswordPage =
-    process.env.NODE_ENV !== "dev" ? process.env.BASEURL_PROD : "http://localhost:3000";
+    process.env.NODE_ENV == "prod" ? process.env.BASEURL_PROD : "http://localhost:3000";
+
+  console.log(resetPasswordPage);
 
   const email = {
     body: {
