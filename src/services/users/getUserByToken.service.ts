@@ -3,15 +3,12 @@ import { User } from "../../entities/user.entity";
 import { IUserReturn } from "../../interfaces/users.interfaces";
 import { userReturnSchema } from "../../schemas/users.schemas";
 
-const getUserByTokenService = async (userData: {
-  id: string;
-  isSeller: boolean;
-}): Promise<IUserReturn> => {
+const getUserByTokenService = async (id: string): Promise<IUserReturn> => {
   const userRepo = AppDataSource.getRepository(User);
 
   const user = await userRepo.findOne({
     where: {
-      id: userData.id,
+      id: id,
     },
     relations: {
       address: true,
