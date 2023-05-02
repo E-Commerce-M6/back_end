@@ -49,12 +49,29 @@ const filterQuerySchema = z
     brand: z.string(),
     model: z.string(),
     color: z.string(),
+    priceMAX: z.string(),
+    priceMIN: z.string(),
+    kmMAX: z.string(),
+    kmMIN: z.string(),
+    published: z.string().transform((value) => {
+      if (value.toLowerCase() == "true" || Number(value) > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }),
   })
   .partial();
 
 const posterQuerySchema = queryPaginateSchema
   .extend({
-    kilometers: z.number(),
+    published: z.string().transform((value) => {
+      if (value.toLowerCase() == "true" || Number(value) > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }),
     priceMAX: z.string(),
     priceMIN: z.string(),
     year: z.string(),
@@ -62,6 +79,8 @@ const posterQuerySchema = queryPaginateSchema
     brand: z.string(),
     model: z.string(),
     color: z.string(),
+    kmMAX: z.string(),
+    kmMIN: z.string(),
   })
   .partial();
 
