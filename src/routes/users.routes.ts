@@ -9,6 +9,7 @@ import {
   ensureDataIsValidMiddleware,
   ensureEmailOrCpfNotUsedMiddleware,
   ensureUserExistsMiddleware,
+  ensureUserOwnerMiddleware,
 } from "../middlewares";
 import { userCreateSchema, userUpdateSchema } from "../schemas/users.schemas";
 import updateUserController from "../controllers/users/updateUser.controller";
@@ -29,8 +30,16 @@ usersRoutes.patch(
   "/:id",
   ensureAuthMiddleware,
   ensureDataIsValidMiddleware(userUpdateSchema),
+  ensureUserExistsMiddleware,
+  ensureUserOwnerMiddleware,
   updateUserController
 );
-usersRoutes.delete("/:id", ensureAuthMiddleware, ensureUserExistsMiddleware, deleteUserController);
+usersRoutes.delete(
+  "/:id",
+  ensureAuthMiddleware,
+  ensureUserExistsMiddleware,
+  ensureUserOwnerMiddleware,
+  deleteUserController
+);
 
 export default usersRoutes;
