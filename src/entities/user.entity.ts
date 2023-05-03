@@ -13,7 +13,7 @@ import {
 import { Address } from "./address.entity";
 import { Poster } from "./poster.entity";
 import { getRounds, hashSync } from "bcryptjs";
-import { Comment } from "./coment.entity";
+import { Comment } from "./comment.entity";
 
 @Entity("user")
 export class User {

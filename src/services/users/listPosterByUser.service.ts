@@ -64,6 +64,12 @@ const listPosterByUserService = async (
       user: false,
       images: true,
     },
+    order: {
+      createdAt: "DESC",
+      images: {
+        id: "ASC",
+      },
+    },
   });
 
   const prevPage: string | null =
