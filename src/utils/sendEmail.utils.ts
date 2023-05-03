@@ -7,18 +7,15 @@ import "dotenv/config";
 const sendEmail = async ({ to, subject, text }: ISendEmail) => {
   const transporter = createTransport({
     host: process.env.EMAIL_HOST,
-    port: Number(process.env.EMAIL_PORT),
     auth: {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
   });
 
-  const sender = process.env.SENDER_EMAIL ? process.env.SENDER_EMAIL : process.env.SMTP_USER;
-
   await transporter
     .sendMail({
-      from: sender,
+      from: process.env.SENDER_EMAIL,
       to,
       subject,
       html: text,
@@ -43,18 +40,23 @@ const resetPasswordTemplate = (
     theme: "default",
     product: {
       // Appears in header & footer of e-mails
-      name: "Mailgen",
+      name: "Motors Shop",
       link: `${protocol}://${host}`,
       // Optional logo
       // logo: 'https://mailgen.js/img/logo.png'
+      copyright: "Copyright © 2023 Motors Shop. Todos os direitos reservados.",
     },
   });
 
   const resetPasswordPage =
-    process.env.NODE_ENV !== "dev" ? process.env.BASEURL_PROD : "http://localhost:3000";
+    process.env.NODE_ENV == "prod" ? process.env.BASEURL_PROD : "http://localhost:3000";
+
+  console.log(resetPasswordPage);
 
   const email = {
     body: {
+      greeting: "Olá",
+      signature: "Até mais",
       name: userName,
       intro:
         "Você recebeu este e-mail porque uma solicitação de redefinição de senha para sua conta foi recebida.",
