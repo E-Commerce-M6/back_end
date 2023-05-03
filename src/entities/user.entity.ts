@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -14,6 +13,7 @@ import {
 import { Address } from "./address.entity";
 import { Poster } from "./poster.entity";
 import { getRounds, hashSync } from "bcryptjs";
+import { Comment } from "./coment.entity";
 
 @Entity("user")
 export class User {
@@ -64,6 +64,9 @@ export class User {
 
   @OneToMany(() => Poster, (poster) => poster.user)
   posters: Poster[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
 
   @BeforeInsert()
   @BeforeUpdate()

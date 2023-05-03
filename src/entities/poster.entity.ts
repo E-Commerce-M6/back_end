@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 import { ImagePoster } from "./imagePoster";
 import { User } from "./user.entity";
+import { Comment } from "./coment.entity";
 
 export enum FuelType {
   DIESEL = "diesel",
@@ -68,6 +69,9 @@ export class Poster {
 
   @OneToMany(() => ImagePoster, (image) => image.poster, { cascade: ["insert", "update"] })
   images: ImagePoster[];
+
+  @OneToMany(() => Comment, (comment) => comment.poster)
+  comments: Comment[];
 
   @AfterLoad()
   @AfterInsert()
