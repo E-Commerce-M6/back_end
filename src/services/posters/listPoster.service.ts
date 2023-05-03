@@ -1,7 +1,7 @@
 import QueryString from "qs";
 import AppDataSource from "../../data-source";
 import { FuelType, Poster } from "../../entities/poster.entity";
-import { Repository } from "typeorm";
+import { FindManyOptions, Repository } from "typeorm";
 import { AppError } from "../../errors/AppError";
 import { IPosterPagination } from "../../interfaces/posters.interfaces";
 import { posterWithUserReturnSchema, posterQuerySchema } from "../../schemas/posters.schemas";
@@ -47,7 +47,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
     realPage = 1;
   }
 
-  const findOptions = {
+  const findOptions: FindManyOptions<Poster> = {
     take: realTake,
     skip: realPage * realTake - realTake,
     where: {
@@ -61,8 +61,14 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
         ],
     },
     relations: {
-      images: true,
       user: true,
+      images: true,
+    },
+    order: {
+      createdAt: "DESC",
+      images: {
+        id: "ASC",
+      },
     },
   };
 
@@ -97,7 +103,6 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
     .skip(findOptions.skip)
     .take(findOptions.take)
     .leftJoinAndSelect("poster.user", "user")
-    .orderBy("poster.createdAt", "DESC")
     .getMany();
 
   const getQuery = () =>

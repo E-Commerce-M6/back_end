@@ -12,11 +12,13 @@ const updatePosterService = async (
   const posterRepository: Repository<Poster> = AppDataSource.getRepository(Poster);
   const imageRepository: Repository<ImagePoster> = AppDataSource.getRepository(ImagePoster);
 
-  await imageRepository.delete({
-    poster: {
-      id: posterId,
-    },
-  });
+  if (posterUpdateData.images) {
+    await imageRepository.delete({
+      poster: {
+        id: posterId,
+      },
+    });
+  }
 
   const posterData = await posterRepository.findOne({
     where: {

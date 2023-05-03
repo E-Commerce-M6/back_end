@@ -11,7 +11,7 @@ import {
 } from "typeorm";
 import { ImagePoster } from "./imagePoster";
 import { User } from "./user.entity";
-import { Comment } from "./coment.entity";
+import { Comment } from "./comment.entity";
 
 export enum FuelType {
   DIESEL = "diesel",
@@ -76,8 +76,8 @@ export class Poster {
   @AfterLoad()
   @AfterInsert()
   _convertNumerics(): void {
-    this.kilometers = parseFloat(this.kilometers as any);
-    this.fipe_price = parseFloat(this.fipe_price as any);
-    this.price = parseFloat(this.price as any);
+    this.kilometers = parseFloat(String(this.kilometers));
+    this.fipe_price = parseFloat(String(this.fipe_price));
+    this.price = parseFloat(String(this.price));
   }
 }
