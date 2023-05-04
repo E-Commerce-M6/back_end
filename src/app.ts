@@ -20,7 +20,7 @@ app.use("/posters", posterRoutes);
 app.use("/users", usersRoutes);
 app.use("/login", loginRoutes);
 app.use("/resetPassword", resetPasswordRoutes);
-app.use("/comments", commentRoutes);
+app.use("/posters", commentRoutes);
 
 app.use(handleError);
 export default app;
