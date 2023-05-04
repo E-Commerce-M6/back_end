@@ -1,17 +1,12 @@
-import { NextFunction, Request, Response } from 'express';
-import { AppError } from '../errors/AppError';
+import { NextFunction, Request, Response } from "express";
+import { AppError } from "../errors/AppError";
 
-const ensureIsSellerMiddleware = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-) => {
+const ensureIsSellerMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user.isSeller) {
+    throw new AppError("Not Authorization", 403);
+  }
 
-    if (!req.user.isSeller) {
-        throw new AppError('Not Authorization', 401);
-    }
-
-    return next();
+  return next();
 };
 
 export default ensureIsSellerMiddleware;
