@@ -8,6 +8,7 @@ import {
   ensureAuthMiddleware,
   ensureDataIsValidMiddleware,
   ensureEmailOrCpfNotUsedMiddleware,
+  ensureIsIdValidMiddleware,
   ensureUserExistsMiddleware,
   ensureUserOwnerMiddleware,
 } from "../middlewares";
@@ -17,7 +18,12 @@ import deleteUserController from "./../controllers/users/deleteUser.controller";
 
 const usersRoutes: Router = Router();
 
-usersRoutes.get("/:id/posters", ensureUserExistsMiddleware, listPosterByUserController);
+usersRoutes.get(
+  "/:id/posters",
+  ensureIsIdValidMiddleware,
+  ensureUserExistsMiddleware,
+  listPosterByUserController
+);
 usersRoutes.get("/profile", ensureAuthMiddleware, getUserByTokenController);
 
 usersRoutes.post(
@@ -29,6 +35,7 @@ usersRoutes.post(
 usersRoutes.patch(
   "/:id",
   ensureAuthMiddleware,
+  ensureIsIdValidMiddleware,
   ensureDataIsValidMiddleware(userUpdateSchema),
   ensureUserExistsMiddleware,
   ensureUserOwnerMiddleware,
@@ -37,6 +44,7 @@ usersRoutes.patch(
 usersRoutes.delete(
   "/:id",
   ensureAuthMiddleware,
+  ensureIsIdValidMiddleware,
   ensureUserExistsMiddleware,
   ensureUserOwnerMiddleware,
   deleteUserController

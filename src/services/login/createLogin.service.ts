@@ -11,13 +11,13 @@ const createLoginService = async ({ email, password }: ILoginSchema): Promise<IL
   const findUsers = await userRepository.findOneBy({ email: email });
 
   if (!findUsers) {
-    throw new AppError("Password or email incorrect", 403);
+    throw new AppError("Password or email incorrect", 401);
   }
 
   const checkPassword = await compare(password, findUsers.password);
 
   if (!checkPassword) {
-    throw new AppError("Password or email incorrect", 403);
+    throw new AppError("Password or email incorrect", 401);
   }
 
   const tokenUser = jwt.sign(
