@@ -1,10 +1,11 @@
 import { Router } from "express";
+import getCommentsByPostIdController from "../controllers/comments/getCommentsByPosterId.controller";
 import { ensureDataIsValidMiddleware } from "../middlewares";
 import { createCommentSchema } from "../schemas/comment.schemas";
 import createCommentController from "./../controllers/comments/createComment.controller";
 import ensureAuthMiddleware from "./../middlewares/ensureAuth.middleware";
 import ensurePosterExistsMiddleware from "./../middlewares/ensurePosterExists.middleware";
-import getCommentsByPostIdController from "../controllers/comments/getCommentsByposterId.controller";
+
 
 const commentRoutes: Router = Router();
 
@@ -15,5 +16,7 @@ commentRoutes.post(
   ensureDataIsValidMiddleware(createCommentSchema),
   createCommentController
 );
+
+commentRoutes.get("/:id",ensureAuthMiddleware,ensurePosterExistsMiddleware,getCommentsByPostIdController)
 
 export default commentRoutes;
