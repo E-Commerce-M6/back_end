@@ -16,11 +16,4 @@ commentRoutes.post(
   createCommentController
 );
 
-commentRoutes.get(
-  "/:id",
-  ensureAuthMiddleware,
-  ensurePosterExistsMiddleware,
-  getCommentsByPostIdController
-);
-
 export default commentRoutes;
