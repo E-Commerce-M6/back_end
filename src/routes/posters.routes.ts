@@ -5,6 +5,7 @@ import {
   ensureAuthMiddleware,
   ensureIsSellerMiddleware,
   ensurePostOwnerMiddleware,
+  ensureIsIdValidMiddleware,
 } from "../middlewares";
 import { posterCreateSchema, posterUpdateSchema } from "../schemas/posters.schemas";
 import {
@@ -30,6 +31,7 @@ posterRoutes.patch(
   "/:id",
   ensureAuthMiddleware,
   ensureIsSellerMiddleware,
+  ensureIsIdValidMiddleware,
   ensurePosterExistsMiddleware,
   ensurePostOwnerMiddleware,
   ensureDataIsValidMiddleware(posterUpdateSchema),
@@ -40,6 +42,7 @@ posterRoutes.delete(
   "/:id",
   ensureAuthMiddleware,
   ensureIsSellerMiddleware,
+  ensureIsIdValidMiddleware,
   ensurePosterExistsMiddleware,
   ensurePostOwnerMiddleware,
   deletePosterController
@@ -47,6 +50,11 @@ posterRoutes.delete(
 
 posterRoutes.get("", listPosterController);
 posterRoutes.get("/filters", getPosterFiltersController);
-posterRoutes.get("/:id", ensurePosterExistsMiddleware, getPosterByIdController);
+posterRoutes.get(
+  "/:id",
+  ensureIsIdValidMiddleware,
+  ensurePosterExistsMiddleware,
+  getPosterByIdController
+);
 
 export default posterRoutes;
