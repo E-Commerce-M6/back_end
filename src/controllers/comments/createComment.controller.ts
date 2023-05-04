@@ -1,6 +1,6 @@
 import { ICommentCreateSchema, ICommentReturnSchema } from "../../interfaces/comments.interface";
 import { Response, Request } from "express";
-import createCommentService from "../../services/comments/createComment.service";
+import { createCommentService } from "../../services/comments";
 
 const createCommentController = async (req: Request, res: Response): Promise<Response> => {
   const commentData: ICommentCreateSchema = req.body;

@@ -6,6 +6,7 @@ import ensureAuthMiddleware from "./ensureAuth.middleware";
 import ensureIsSellerMiddleware from "./ensureIsSeller.middleware";
 import ensurePostOwnerMiddleware from "./ensurePostOwner.middleware";
 import ensureUserOwnerMiddleware from "./ensureUserOwner.middleware";
+import ensureIsIdValidMiddleware from "./ensureIsIdValid.middleware";
 
 export {
   ensureDataIsValidMiddleware,
@@ -16,4 +17,5 @@ export {
   ensureUserExistsMiddleware,
   ensurePostOwnerMiddleware,
   ensureUserOwnerMiddleware,
+  ensureIsIdValidMiddleware,
 };

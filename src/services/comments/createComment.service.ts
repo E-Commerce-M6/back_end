@@ -22,9 +22,16 @@ const createCommentService = async (
   });
   await commentRepository.save(comment);
 
-  const returnComment = createCommentReturnSchema.parse(comment);
+  const returnComment = await commentRepository.findOne({
+    where: {
+      id: comment.id,
+    },
+    relations: {
+      user: true,
+    },
+  });
 
-  return returnComment;
+  return createCommentReturnSchema.parse(returnComment);
 };
 
 export default createCommentService;
