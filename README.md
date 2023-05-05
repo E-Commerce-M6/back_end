@@ -55,7 +55,7 @@ Diagrama ER da API representando as relações entre as tabelas do banco de dado
 ```html
 <p align="center">
   <img
-    src="https://drive.google.com/file/d/1vbIy01ACRiRzaNUF-Aqf0ewe2HL-pNKK/view"
+    src="https://user-images.githubusercontent.com/106792605/236584590-23897523-94fb-4556-890a-52e6062ec114.svg"
     width="500"
     height="500"
   />
