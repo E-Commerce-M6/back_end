@@ -7,7 +7,7 @@ Esta é uma api com o objetivo de gerenciar um e-commerce de venda de automóvei
 ## Tabela de Conteúdos
 
 - [Linguagens e tecnologias utilizadas](#1-Linguagens-e-tecnologias-utilizadas)
-- [Diagrama ER](#2-diagrama-er)
+- [Diagrama DER](#2-diagrama-der)
 - [Início Rápido](#3-início-rápido)
   - [Instalando Dependências](#31-instalando-dependências)
   - [Variáveis de Ambiente](#32-variáveis-de-ambiente)
@@ -47,11 +47,11 @@ Visão geral do projeto, um pouco das tecnologias usadas.
 
 ---
 
-## 2. Diagrama ER
+## 2. Diagrama DER
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
 
-Diagrama ER da API representando as relações entre as tabelas do banco de dados.
+Diagrama DER da API representando as relações entre as tabelas do banco de dados.
 
 <p align="center">
   <img src="https://images2.imgbox.com/7c/a5/oYekvvT3_o.png" width="700" height="400" object-fit=contain />
