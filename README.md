@@ -54,7 +54,7 @@ Visão geral do projeto, um pouco das tecnologias usadas.
 Diagrama ER da API representando as relações entre as tabelas do banco de dados.
 
 <p align="center">
-  <img src="https://images2.imgbox.com/7c/a5/oYekvvT3_o.png" width="500" height="500" />
+  <img src="https://images2.imgbox.com/7c/a5/oYekvvT3_o.png" width="700" height="700" />
 </p>
 
 ---
