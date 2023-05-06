@@ -77,7 +77,7 @@ git clone git@github.com:E-Commerce-M6/back_end.git
 code .
 ```
 
--instale as dependências:
+- instale as dependências:
 
 ```shell
 yarn
@@ -89,7 +89,7 @@ ou
 npm i
 ```
 
-- Rodar o aplicativo
+- Rodar o aplicativo:
 
 ```shell
 yarn dev
@@ -136,6 +136,7 @@ yarn typeorm migration:run -d src/data-source.ts
 ## 1. **Users**
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
+[Endpoints](#4-endpoints)
 
 ### Endpoints
 
@@ -487,6 +488,8 @@ Vazio
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
 
+[Endpoints](#4-endpoints)
+
 ### Endpoints
 
 | Método | Rota   | Descrição                |
@@ -537,6 +540,8 @@ Content-type: application/json
 ## 3. **ResetPassword**
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
+
+[Endpoints](#4-endpoints)
 
 ### Endpoints
 
@@ -634,6 +639,8 @@ Vazio
 ## 4. **Posters**
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
+
+[Endpoints](#4-endpoints)
 
 ### Endpoints
 
@@ -980,6 +987,8 @@ Vazio
 ## 5. **Comments**
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
+
+[Endpoints](#4-endpoints)
 
 ### Endpoints
 
