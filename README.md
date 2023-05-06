@@ -6,7 +6,7 @@ Esta é uma api com o objetivo de gerenciar um e-commerce de venda de automóvei
 
 ## Tabela de Conteúdos
 
-- [Visão Geral](#1-💻-Linguagens-e-tecnologias-utilizadas)
+- [Linguagens e tecnologias utilizadas](#1-Linguagens-e-tecnologias-utilizadas)
 - [Diagrama ER](#2-diagrama-er)
 - [Início Rápido](#3-início-rápido)
   - [Instalando Dependências](#31-instalando-dependências)
@@ -16,7 +16,7 @@ Esta é uma api com o objetivo de gerenciar um e-commerce de venda de automóvei
 - [Endpoints](#4-endpoints)
 - [Time de Desenvolvimento](#5-time-de-desenvolvimento)
 
-## 1. 💻 Linguagens e tecnologias utilizadas
+## 1. Linguagens e tecnologias utilizadas
 
 Visão geral do projeto, um pouco das tecnologias usadas.
 
@@ -41,8 +41,9 @@ Visão geral do projeto, um pouco das tecnologias usadas.
 - [bcryptjs](https://www.npmjs.com/package/bcryptjs)
 - [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
 
-URL base da aplicação rodando localmente: http://localhost:3099
-URL base do da aplicação:
+#### URL base da aplicação rodando localmente: http://localhost:3099
+
+#### URL base do da aplicação:
 
 ---
 
@@ -54,11 +55,7 @@ Diagrama ER da API representando as relações entre as tabelas do banco de dado
 
 ```html
 <p align="center">
-  <img
-    src="https://user-images.githubusercontent.com/106792605/236584590-23897523-94fb-4556-890a-52e6062ec114.svg"
-    width="500"
-    height="500"
-  />
+  <img src="https://images2.imgbox.com/7c/a5/oYekvvT3_o.png" width="500" height="500" />
 </p>
 ```
 
@@ -1126,6 +1123,8 @@ Vazio
 ---
 
 ## 5. Time de Desenvolvimento
+
+[ Voltar para o topo ](#tabela-de-conteúdos)
 
 <br>
 
