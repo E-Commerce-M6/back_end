@@ -54,7 +54,7 @@ Visão geral do projeto, um pouco das tecnologias usadas.
 Diagrama DER da API representando as relações entre as tabelas do banco de dados.
 
 <p align="center">
-  <img src="https://images2.imgbox.com/7c/a5/oYekvvT3_o.png" width="700" height="400" object-fit=contain />
+  <img src="https://images2.imgbox.com/0e/45/SFznQArP_o.png" width="700" height="400" object-fit=contain />
 </p>
 
 ---
