@@ -16,10 +16,6 @@ const updateCommentService = async (
     },
   });
 
-  if (!commentData) {
-    throw new Error("Comment not found");
-  }
-
   const comment = commentRepository.create({
     ...commentData,
     ...commentUpdateData,

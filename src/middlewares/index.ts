@@ -7,6 +7,8 @@ import ensureIsSellerMiddleware from "./ensureIsSeller.middleware";
 import ensurePostOwnerMiddleware from "./ensurePostOwner.middleware";
 import ensureUserOwnerMiddleware from "./ensureUserOwner.middleware";
 import ensureIsIdValidMiddleware from "./ensureIsIdValid.middleware";
+import ensureCommentExistsMiddleware from './ensureCommentExists.middleware';
+import ensureCommentOwnerMiddleware from './ensureCommentOwner.middleware';
 
 export {
   ensureDataIsValidMiddleware,
@@ -18,4 +20,6 @@ export {
   ensurePostOwnerMiddleware,
   ensureUserOwnerMiddleware,
   ensureIsIdValidMiddleware,
+  ensureCommentExistsMiddleware,
+  ensureCommentOwnerMiddleware
 };

@@ -1,14 +1,15 @@
 import { Router } from "express";
 import {
   ensureAuthMiddleware,
+  ensureCommentExistsMiddleware,
+  ensureCommentOwnerMiddleware,
   ensureDataIsValidMiddleware,
   ensureIsIdValidMiddleware,
   ensurePosterExistsMiddleware,
 } from "../middlewares";
 import { createCommentSchema, updateCommentSchema } from "../schemas/comment.schemas";
-import { createCommentController, getCommentsByPostIdController } from "../controllers/comments";
-import updateCommentController from "./../controllers/comments/updateComment.controller";
-import ensureCommentOwnerMiddleware from "./../middlewares/ensureCommentOwner.middleware";
+import { createCommentController, deleteCommentController, getCommentsByPostIdController, updateCommentController } from "../controllers/comments";
+
 
 const commentRoutes: Router = Router();
 
@@ -24,6 +25,7 @@ commentRoutes.post(
 commentRoutes.patch(
   "/comments/:id",
   ensureAuthMiddleware,
+  ensureCommentExistsMiddleware,
   ensureCommentOwnerMiddleware,
   ensureDataIsValidMiddleware(updateCommentSchema),
   updateCommentController
@@ -34,6 +36,15 @@ commentRoutes.get(
   ensureIsIdValidMiddleware,
   ensurePosterExistsMiddleware,
   getCommentsByPostIdController
+);
+
+commentRoutes.delete(
+  "/comments/:id",
+  ensureAuthMiddleware,
+  ensureIsIdValidMiddleware,
+  ensureCommentExistsMiddleware,
+  ensureCommentOwnerMiddleware,
+  deleteCommentController,
 );
 
 export default commentRoutes;
