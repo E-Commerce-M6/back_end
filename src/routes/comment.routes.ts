@@ -5,8 +5,10 @@ import {
   ensureIsIdValidMiddleware,
   ensurePosterExistsMiddleware,
 } from "../middlewares";
-import { createCommentSchema } from "../schemas/comment.schemas";
+import { createCommentSchema, updateCommentSchema } from "../schemas/comment.schemas";
 import { createCommentController, getCommentsByPostIdController } from "../controllers/comments";
+import updateCommentController from "./../controllers/comments/updateComment.controller";
+import ensureCommentOwnerMiddleware from "./../middlewares/ensureCommentOwner.middleware";
 
 const commentRoutes: Router = Router();
 
@@ -19,8 +21,16 @@ commentRoutes.post(
   createCommentController
 );
 
+commentRoutes.patch(
+  "/comments/:id",
+  ensureAuthMiddleware,
+  ensureCommentOwnerMiddleware,
+  ensureDataIsValidMiddleware(updateCommentSchema),
+  updateCommentController
+);
+
 commentRoutes.get(
-  "/:id/comments",
+  "/comments/:id",
   ensureIsIdValidMiddleware,
   ensurePosterExistsMiddleware,
   getCommentsByPostIdController
