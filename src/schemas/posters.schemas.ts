@@ -13,17 +13,17 @@ const posterCreateSchema = z.object({
   price: z.number().nonnegative().lte(9999999.99),
   description: z.string(),
   is_published: z.boolean().nullish(),
-  images: z
-    .object({
-      url: z.string(),
-    })
-    .array().optional(),
 });
 
 const posterReturnSchema = posterCreateSchema.extend({
   id: z.string(),
   createdAt: z.date().nullish(),
   updatedAt: z.date().nullish(),
+  images: z
+  .object({
+    url: z.string(),
+  })
+  .array(),
 });
 
 const posterUpdateSchema = posterCreateSchema.partial();
