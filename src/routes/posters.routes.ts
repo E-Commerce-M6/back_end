@@ -22,7 +22,7 @@ import bodyParser from "body-parser";
 
 const posterRoutes: Router = Router();
 
-posterRoutes.use(bodyParser.json())
+posterRoutes.use(bodyParser.json());
 
 posterRoutes.post(
   "",

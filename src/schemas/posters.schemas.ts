@@ -20,18 +20,15 @@ const posterReturnSchema = posterCreateSchema.extend({
   createdAt: z.date().nullish(),
   updatedAt: z.date().nullish(),
   images: z
-  .object({
-    url: z.string(),
-  })
-  .array(),
+    .object({
+      url: z.string(),
+    })
+    .array(),
 });
 
 const posterUpdateSchema = posterCreateSchema.partial();
 
-const posterWithUserReturnSchema = posterCreateSchema.extend({
-  id: z.string(),
-  createdAt: z.date().nullish(),
-  updatedAt: z.date().nullish(),
+const posterWithUserReturnSchema = posterReturnSchema.extend({
   user: userReturnSchema.omit({ address: true }),
 });
 
