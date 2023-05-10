@@ -15,7 +15,6 @@ const ensureCommentExistsMiddleware = async (req: Request, res: Response, next: 
   if (!foundComment) {
     throw new AppError("Comment not found", 404);
   }
-
   return next();
 };
 

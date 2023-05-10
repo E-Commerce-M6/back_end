@@ -22,7 +22,6 @@ const ensureCommentOwnerMiddleware = async (
   if (foundComment.user.id !== req.user.id) {
     throw new AppError("Must be owner", 403);
   }
-
   return next();
 };
 

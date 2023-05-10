@@ -3,7 +3,7 @@ import { Repository } from "typeorm";
 import AppDataSource from "../../data-source";
 import { ICommentCreateSchema, ICommentReturnSchema } from "../../interfaces/comments.interface";
 import { Comment } from "../../entities/comment.entity";
-import { createCommentReturnSchema } from "../../schemas/comment.schemas";
+import { createCommentReturnSchema } from "../../schemas/comments.schemas";
 
 const createCommentService = async (
   commentData: ICommentCreateSchema,

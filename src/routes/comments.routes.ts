@@ -7,14 +7,18 @@ import {
   ensureIsIdValidMiddleware,
   ensurePosterExistsMiddleware,
 } from "../middlewares";
-import { createCommentSchema, updateCommentSchema } from "../schemas/comment.schemas";
-import { createCommentController, deleteCommentController, getCommentsByPostIdController, updateCommentController } from "../controllers/comments";
-
+import { createCommentSchema, updateCommentSchema } from "../schemas/comments.schemas";
+import {
+  createCommentController,
+  deleteCommentController,
+  getCommentsByPostIdController,
+  updateCommentController,
+} from "../controllers/comments";
 
 const commentRoutes: Router = Router();
 
 commentRoutes.post(
-  "/:id/comments",
+  "/posters/:id/comments",
   ensureAuthMiddleware,
   ensureIsIdValidMiddleware,
   ensurePosterExistsMiddleware,
@@ -25,6 +29,7 @@ commentRoutes.post(
 commentRoutes.patch(
   "/comments/:id",
   ensureAuthMiddleware,
+  ensureIsIdValidMiddleware,
   ensureCommentExistsMiddleware,
   ensureCommentOwnerMiddleware,
   ensureDataIsValidMiddleware(updateCommentSchema),
@@ -32,7 +37,7 @@ commentRoutes.patch(
 );
 
 commentRoutes.get(
-  "/comments/:id",
+  "/posters/:id/comments",
   ensureIsIdValidMiddleware,
   ensurePosterExistsMiddleware,
   getCommentsByPostIdController
@@ -44,7 +49,7 @@ commentRoutes.delete(
   ensureIsIdValidMiddleware,
   ensureCommentExistsMiddleware,
   ensureCommentOwnerMiddleware,
-  deleteCommentController,
+  deleteCommentController
 );
 
 export default commentRoutes;
