@@ -17,7 +17,7 @@ const posterCreateSchema = z.object({
     .object({
       url: z.string(),
     })
-    .array(),
+    .array().optional(),
 });
 
 const posterReturnSchema = posterCreateSchema.extend({

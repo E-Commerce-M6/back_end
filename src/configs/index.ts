@@ -1,0 +1,1 @@
+import upload from "./multer.config";
