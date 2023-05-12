@@ -1,25 +1,26 @@
 import { Repository } from "typeorm";
-
 import AppDataSource from "../../data-source";
-import { ICommentCreateSchema, ICommentReturnSchema } from "../../interfaces/comments.interface";
+import { ICommentUpdateSchema, ICommentReturnSchema } from "../../interfaces/comments.interface";
 import { Comment } from "../../entities/comment.entity";
 import { createCommentReturnSchema } from "../../schemas/comments.schemas";
 
-const createCommentService = async (
-  commentData: ICommentCreateSchema,
-  userId: string,
-  posterId: string
+const updateCommentService = async (
+  commentUpdateData: ICommentUpdateSchema,
+  commentId: string
 ): Promise<ICommentReturnSchema> => {
   const commentRepository: Repository<Comment> = AppDataSource.getRepository(Comment);
-  const comment = commentRepository.create({
-    user: {
-      id: userId,
+
+  const commentData = await commentRepository.findOne({
+    where: {
+      id: commentId,
     },
-    poster: {
-      id: posterId,
-    },
-    ...commentData,
   });
+
+  const comment = commentRepository.create({
+    ...commentData,
+    ...commentUpdateData,
+  });
+
   await commentRepository.save(comment);
 
   const returnComment = await commentRepository.findOne({
@@ -34,4 +35,4 @@ const createCommentService = async (
   return createCommentReturnSchema.parse(returnComment);
 };
 
-export default createCommentService;
+export default updateCommentService;
