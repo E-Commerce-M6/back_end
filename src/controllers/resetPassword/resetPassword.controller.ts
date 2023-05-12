@@ -3,11 +3,10 @@ import { resetPasswordService } from "../../services/resetPassword";
 
 const resetPasswordController = async (req: Request, res: Response): Promise<Response> => {
   const { password } = req.body;
-  const { resetToken } = req.params;
 
-  await resetPasswordService(password, resetToken);
+  await resetPasswordService(password, req.user.id);
 
-  return res.json({ message: "Password change with success" });
+  return res.json({ message: "Password updated with success" });
 };
 
 export default resetPasswordController;
