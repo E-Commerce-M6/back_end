@@ -3,7 +3,7 @@ import {
   resetPasswordController,
   sendResetEmailPasswordController,
 } from "../controllers/resetPassword";
-import { ensureDataIsValidMiddleware } from "../middlewares";
+import { ensureDataIsValidMiddleware, ensureResetTokenValidMiddleware } from "../middlewares";
 import {
   resetPasswordSchema,
   sendResetEmailPasswordSchema,
@@ -19,6 +19,7 @@ resetPasswordRoutes.post(
 
 resetPasswordRoutes.patch(
   "/:resetToken",
+  ensureResetTokenValidMiddleware,
   ensureDataIsValidMiddleware(resetPasswordSchema),
   resetPasswordController
 );
