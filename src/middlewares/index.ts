@@ -10,6 +10,7 @@ import ensureIsIdValidMiddleware from "./ensureIsIdValid.middleware";
 import treatDataMiddleware from "./treatData.middleware";
 import ensureCommentExistsMiddleware from "./ensureCommentExists.middleware";
 import ensureCommentOwnerMiddleware from "./ensureCommentOwner.middleware";
+import ensureResetTokenValidMiddleware from "./ensureResetTokenValid.middleware";
 
 export {
   ensureDataIsValidMiddleware,
@@ -24,4 +25,5 @@ export {
   treatDataMiddleware,
   ensureCommentExistsMiddleware,
   ensureCommentOwnerMiddleware,
+  ensureResetTokenValidMiddleware,
 };
