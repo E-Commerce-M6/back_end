@@ -44,7 +44,7 @@ const updatePosterService = async (
       const image = imagesData[index];
 
       const upload = await cloudinary.uploader.upload(image.path, (error, result) => result);
-      imagesPublicIds.push({ public_id: upload.public_id, url: upload.url });
+      imagesPublicIds.push({ public_id: upload.public_id, url: upload.secure_url });
 
       fs.unlink(image.path, (error) => {
         if (error) {
