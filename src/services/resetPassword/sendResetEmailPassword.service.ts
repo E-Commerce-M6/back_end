@@ -19,7 +19,7 @@ const sendResetEmailPasswordService = async (email: string, protocol: string, ho
   }
 
   const resetToken = uuidv4();
-  const resetDate = new Date().toLocaleDateString();
+  const resetDate = new Date().toLocaleDateString("pt-BR");
 
   const updatedUser = userRepository.create({
     ...user,

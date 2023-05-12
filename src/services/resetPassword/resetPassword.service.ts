@@ -19,7 +19,7 @@ const resetPasswordService = async (password: string, resetToken: string) => {
     .split("/")
     .reverse()
     .join("/");
-  const dateNow = new Date().toLocaleDateString();
+  const dateNow = new Date().toLocaleDateString("pt-BR");
 
   if (resetDate !== dateNow) {
     throw new AppError(
