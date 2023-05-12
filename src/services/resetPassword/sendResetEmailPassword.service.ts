@@ -2,7 +2,7 @@ import { Repository } from "typeorm";
 import AppDataSource from "../../data-source";
 import { User } from "../../entities/user.entity";
 import { AppError } from "../../errors/AppError";
-import { randomUUID } from "node:crypto";
+import { v4 as uuidv4 } from "uuid";
 import { sendEmail, resetPasswordTemplate } from "../../utils/sendEmail.utils";
 
 const sendResetEmailPasswordService = async (email: string, protocol: string, host: string) => {
@@ -18,7 +18,7 @@ const sendResetEmailPasswordService = async (email: string, protocol: string, ho
     throw new AppError("User not found!", 404);
   }
 
-  const resetToken = randomUUID();
+  const resetToken = uuidv4();
   const resetDate = new Date().toLocaleDateString();
 
   const updatedUser = userRepository.create({
