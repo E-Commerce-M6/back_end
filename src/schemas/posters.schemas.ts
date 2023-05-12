@@ -13,6 +13,12 @@ const posterCreateSchema = z.object({
   price: z.number().nonnegative().lte(9999999.99),
   description: z.string(),
   is_published: z.boolean().nullish(),
+});
+
+const posterReturnSchema = posterCreateSchema.extend({
+  id: z.string(),
+  createdAt: z.date().nullish(),
+  updatedAt: z.date().nullish(),
   images: z
     .object({
       url: z.string(),
@@ -20,18 +26,9 @@ const posterCreateSchema = z.object({
     .array(),
 });
 
-const posterReturnSchema = posterCreateSchema.extend({
-  id: z.string(),
-  createdAt: z.date().nullish(),
-  updatedAt: z.date().nullish(),
-});
-
 const posterUpdateSchema = posterCreateSchema.partial();
 
-const posterWithUserReturnSchema = posterCreateSchema.extend({
-  id: z.string(),
-  createdAt: z.date().nullish(),
-  updatedAt: z.date().nullish(),
+const posterWithUserReturnSchema = posterReturnSchema.extend({
   user: userReturnSchema.omit({ address: true }),
 });
 

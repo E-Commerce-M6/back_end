@@ -6,6 +6,7 @@ import {
   ensureIsSellerMiddleware,
   ensurePostOwnerMiddleware,
   ensureIsIdValidMiddleware,
+  treatDataMiddleware,
 } from "../middlewares";
 import { posterCreateSchema, posterUpdateSchema } from "../schemas/posters.schemas";
 import {
@@ -16,11 +17,17 @@ import {
   getPosterByIdController,
   getPosterFiltersController,
 } from "../controllers/posters";
+import upload from "../configs/multer.config";
+import bodyParser from "body-parser";
 
 const posterRoutes: Router = Router();
 
+posterRoutes.use(bodyParser.json());
+
 posterRoutes.post(
   "",
+  upload.array("image"),
+  treatDataMiddleware,
   ensureAuthMiddleware,
   ensureIsSellerMiddleware,
   ensureDataIsValidMiddleware(posterCreateSchema),
@@ -29,6 +36,8 @@ posterRoutes.post(
 
 posterRoutes.patch(
   "/:id",
+  upload.array("image"),
+  treatDataMiddleware,
   ensureAuthMiddleware,
   ensureIsSellerMiddleware,
   ensureIsIdValidMiddleware,

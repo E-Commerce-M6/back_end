@@ -6,6 +6,9 @@ export class ImagePoster {
   @PrimaryGeneratedColumn("increment")
   id: number;
 
+  @Column({nullable: true})
+  public_id: string | null;
+
   @Column()
   url: string;
 
