@@ -43,7 +43,7 @@ Visão geral do projeto, um pouco das tecnologias usadas.
 
 #### URL base da aplicação rodando localmente: http://localhost:3099
 
-#### URL base do da aplicação:
+#### URL base do da aplicação: https://motorshop-api.onrender.com
 
 ---
 
@@ -117,6 +117,12 @@ Execute as migrations com o comando:
 yarn typeorm migration:run -d src/data-source.ts
 ```
 
+ou
+
+```shell
+npm typeorm migration:run -d src/data-source.ts
+```
+
 ---
 
 ## 4. Endpoints
@@ -159,15 +165,15 @@ yarn typeorm migration:run -d src/data-source.ts
 
 ```
 POST /users
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: None
 Content-type: application/json
 ```
 
 ### Exemplo de Corpo da Requisição:
 
-```json
-{
+```form
+"posterData": {
   "name": "Teste",
   "email": "teste@hotmail.com",
   "password": "123456",
@@ -184,7 +190,10 @@ Content-type: application/json
     "number": "25",
     "complement": "ultima casa da rua"
   }
-}
+},
+"image": {File},
+"image": {File},
+"image": {File}
 ```
 
 ##### Exemplo de Response:
@@ -195,30 +204,34 @@ Content-type: application/json
 
 ```
 {
-	"id": "8e52f59c-6702-49ab-b1d7-c1d4685cd4ba",
-	"name": "Teste",
-	"email": "teste@hotmail.com",
-	"cpf": "12345678999",
-	"phone": "123456789012",
-	"birth_date": "10/05/1998",
-	"is_seller": true,
-	"description": "este é um teste bem testado........",
-	"address": {
-		"id": "852a9cec-04b0-4d70-b7f0-03fad94c3f28",
-		"zip_code": "12345678",
-		"state": "SP",
-		"city": "São Paulo",
-		"street": "Uma rua ",
-		"number": "25",
-		"complement": "ultima casa da rua"
-	},
-	"createdAt": "2023-05-04T00:01:15.445Z",
-	"updatedAt": "2023-05-04T00:01:15.445Z",
-	"deletedAt": null
+	"brand": "Ford",
+	"model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
+	"year": "2020",
+	"fuel_type": "flex",
+	"kilometers": 190,
+	"color": "verde",
+	"fipe_price": 1120770,
+	"price": 1120770,
+	"description": "descricao",
+	"is_published": false,
+	"id": "14247b99-0dd6-46da-9f39-ce5748d62db1",
+	"createdAt": "2023-05-15T19:13:08.274Z",
+	"updatedAt": "2023-05-15T19:13:08.274Z",
+	"images": [
+		{
+			"url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177981/dk3c56fwrh6qpbpe7bda.jpg"
+		},
+		{
+			"url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177984/j2qgxlxzruovtdjcqhra.jpg"
+		},
+		{
+			"url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177985/zvrpotki4irstsiobjre.jpg"
+		}
+	]
 }
 ```
 
-O campo password não é retornado, os campos is_saller (possui o valor false como default), updatedAt, createdAt e id (do tipo uuid é gerado automaticamente no banco de dados) não são passados na requisição mas são retornados na reposta. Os campos reset_token e reset_token_date também são gerados pela api porém não retornam.
+O campo password não é retornado, os campos is_saller (possui o valor false como default), updatedAt, createdAt e id (do tipo uuid é gerado automaticamente no banco de dados) não são passados na requisição mas são retornados na reposta. Os campos reset_token e reset_token_date também são gerados pela api porém não retornam. O campo image é do tipo File jpg ou png e podem se enviadas varias imagens ao fazer a criação.
 
 ### Possíveis Erros:
 
@@ -236,7 +249,7 @@ O campo password não é retornado, os campos is_saller (possui o valor false co
 
 ```
 GET /api/users
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: None
 ```
@@ -298,7 +311,7 @@ Vazio
 
 ```
 GET/users/8e52f59c-6702-49ab-b1d7-c1d4685cd4ba/posters
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: None
 Content-type: None
 ```
@@ -368,7 +381,7 @@ Vazio
 
 ```
 PATCH /users/8e52f59c-6702-49ab-b1d7-c1d4685cd4ba
-Host: URl
+Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: application/json
 ```
@@ -443,7 +456,7 @@ Todos os campos são opcionais. Campos que não podem ser editados: id, createdA
 
 ```
 DELETE/users/8e52f59c-6702-49ab-b1d7-c1d4685cd4ba
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: None
 ```
@@ -503,7 +516,7 @@ Vazio
 
 ```
 POST/login
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: None
 Content-type: application/json
 ```
@@ -557,7 +570,7 @@ Content-type: application/json
 
 ```
 POST /resetPasword
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: none
 Content-type: application/json
 ```
@@ -599,7 +612,7 @@ Content-type: application/json
 
 ```
 PATCH /resetPassword/:resetToken
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: None
 Content-type: None
 ```
@@ -661,7 +674,7 @@ Vazio
 
 ```
 POST /posters
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: application/json
 ```
@@ -742,7 +755,7 @@ Content-type: application/json
 
 ```
 GET /posters
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: None
 Content-type: None
 ```
@@ -825,7 +838,7 @@ Vazio
 
 ```
 GET /posters/filters
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: None
 Content-type: None
 ```
@@ -870,7 +883,7 @@ Vazio
 
 ```
 PATCH /posters/791d43aa-dca0-47c3-9141-4b91819225f3
-Host: URl
+Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: application/json
 ```
@@ -943,7 +956,7 @@ Todos os campos são opcionais. Campos que não podem ser editados: id, createdA
 
 ```
 DELETE/posters/791d43aa-dca0-47c3-9141-4b91819225f3
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: None
 ```
@@ -997,18 +1010,20 @@ Vazio
 | ------ | ---------------------------- | --------------------------------------- |
 | POST   | /posters/:poster_id/comments | Criação de um comentário                |
 | GET    | /posters/:poster_id/comments | Lista todos os comentários de um poster |
+| PATCH  | /comments/:comment_id        | Edita um comentário do usuário logado   |
+| DELETE | /comments/:comment_id        | Deleta um comentário do usuário logado  |
 
 ---
 
 ### 5.1. **Criação de comment**
 
-### POST `/posters/:poster_id/comments`
+### POST `/posters/<poster_id>/comments`
 
 ### Exemplo de Request:
 
 ```
 POST /posters/791d43aa-dca0-47c3-9141-4b91819225f2/comments
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: application/json
 ```
@@ -1068,7 +1083,7 @@ Content-type: application/json
 
 ---
 
-### 5.2. **Listar comentários de um poster**
+### 5.2. **Listar comments de um poster**
 
 ### GET `/posters/:poster_id/comments`
 
@@ -1076,7 +1091,7 @@ Content-type: application/json
 
 ```
 POST /posters/791d43aa-dca0-47c3-9141-4b91819225f2/comments
-Host: URL
+Host: https://motorshop-api.onrender.com
 Authorization: None
 Content-type: None
 ```
@@ -1127,6 +1142,127 @@ Vazio
 | Código do Erro | Descrição          |
 | -------------- | ------------------ |
 | 404 Not Found  | "Poster not found" |
+
+---
+
+### 5.3. **Editar comment**
+
+### `PATCH /comments/<comment_id>`
+
+### Exemplo de Request:
+
+```
+PATCH /comments/93ba7ee7-cd0c-4b45-aa18-b42b155c102b
+Host: https://motorshop-api.onrender.com
+Authorization: Bearer token
+Content-type: application/json
+```
+
+### Proteção:
+
+##### O usuário precisa estar logado.
+
+##### O usuário precisa ser o dono do comentário.
+
+### Parâmetros da Requisição:
+
+| Parâmetro  | Tipo   | Descrição                         |
+| ---------- | ------ | --------------------------------- |
+| comment_id | string | Identificador único do comentário |
+
+### Corpo da Requisição:
+
+```json
+{
+  "content": "Pode pagar no pix sim"
+}
+```
+
+Todos os campos são opcionais. Campos que não podem ser editados: id, createdAt.
+
+### Exemplo de Response:
+
+```
+200 OK
+```
+
+```json
+{
+  "content": "Pode pagar no pix sim",
+  "id": "93ba7ee7-cd0c-4b45-aa18-b42b155c102b",
+  "user": {
+    "id": "8e52f59c-6702-49ab-b1d7-c1d4685cd4ba",
+    "name": "Teste 2",
+    "email": "teste@hotmail.com",
+    "cpf": "12345678999",
+    "phone": "123456789012",
+    "birth_date": "1998-05-10",
+    "is_seller": true,
+    "description": "este é um teste bem testado........",
+    "createdAt": "2023-05-04T00:01:15.445Z",
+    "updatedAt": "2023-05-04T23:25:35.434Z",
+    "deletedAt": null
+  },
+  "createdAt": "2023-05-15T17:39:12.068Z"
+}
+```
+
+### Possíveis Erros:
+
+| Código do Erro   | Descrição           |
+| ---------------- | ------------------- |
+| 401 Unauthorized | "Invalid token"     |
+| 404 Not Found    | "Comment not found" |
+
+---
+
+### 4.5. **Delete comment**
+
+### `DELETE /comments/<poster_id>`
+
+### Exemplo de Request:
+
+```
+DELETE/comments/93ba7ee7-cd0c-4b45-aa18-b42b155c102b
+Host: https://motorshop-api.onrender.com
+Authorization: Bearer token
+Content-type: None
+```
+
+### Proteção:
+
+##### O usuário precisa estar logado.
+
+##### O usuário precisa ser o dono do comentário.
+
+### Parâmetros da Requisição:
+
+| Parâmetro  | Tipo   | Descrição                         |
+| ---------- | ------ | --------------------------------- |
+| comment_id | string | Identificador único do comentário |
+
+### Corpo da Requisição:
+
+```json
+Vazio
+```
+
+### Exemplo de Response:
+
+```
+204 No content
+```
+
+```json
+Vazio
+```
+
+### Possíveis Erros:
+
+| Código do Erro   | Descrição           |
+| ---------------- | ------------------- |
+| 401 Unauthorized | "Invalid token"     |
+| 404 Not Found    | "Comment not found" |
 
 ---
 
