@@ -54,7 +54,7 @@ Visão geral do projeto, um pouco das tecnologias usadas.
 Diagrama DER da API representando as relações entre as tabelas do banco de dados.
 
 <p align="center">
-  <img src="https://images2.imgbox.com/0e/45/SFznQArP_o.png" width="700" height="400" object-fit=contain />
+  <img src="https://images2.imgbox.com/d1/08/lsxwY6Qu_o.png" width="700" height="400" object-fit=contain />
 </p>
 
 ---
@@ -173,27 +173,24 @@ Content-type: application/json
 ### Exemplo de Corpo da Requisição:
 
 ```form
-"posterData": {
-  "name": "Teste",
-  "email": "teste@hotmail.com",
-  "password": "123456",
-  "cpf": "12345678912",
-  "phone": "123456789012",
-  "birth_date": "10/05/1998",
-  "is_seller": true,
-  "description": "este é um teste bem testado........",
-  "address": {
-    "zip_code": "12345678",
-    "state": "SP",
-    "city": "São Paulo",
-    "street": "Uma rua ",
-    "number": "25",
-    "complement": "ultima casa da rua"
-  }
-},
-"image": {File},
-"image": {File},
-"image": {File}
+{
+	"name":"Teste",
+	"email":"teste@hotmail.com",
+	"password":"123456",
+	"cpf": "12345678999",
+	"phone": "123456789012",
+	"birth_date": "10/05/1998",
+	"is_seller": true,
+	"description": "este é um teste bem testado........",
+	"address": {
+		"zip_code":"12345678",
+		"state": "SP",
+		"city": "São Paulo",
+		"street": "Uma rua ",
+		"number": "25",
+		"complement": "ultima casa da rua"
+	}
+}
 ```
 
 ##### Exemplo de Response:
@@ -204,34 +201,30 @@ Content-type: application/json
 
 ```
 {
-	"brand": "Ford",
-	"model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
-	"year": "2020",
-	"fuel_type": "flex",
-	"kilometers": 190,
-	"color": "verde",
-	"fipe_price": 1120770,
-	"price": 1120770,
-	"description": "descricao",
-	"is_published": false,
-	"id": "14247b99-0dd6-46da-9f39-ce5748d62db1",
-	"createdAt": "2023-05-15T19:13:08.274Z",
-	"updatedAt": "2023-05-15T19:13:08.274Z",
-	"images": [
-		{
-			"url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177981/dk3c56fwrh6qpbpe7bda.jpg"
-		},
-		{
-			"url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177984/j2qgxlxzruovtdjcqhra.jpg"
-		},
-		{
-			"url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177985/zvrpotki4irstsiobjre.jpg"
-		}
-	]
+	"id": "8e52f59c-6702-49ab-b1d7-c1d4685cd4ba",
+	"name": "Teste",
+	"email": "teste@hotmail.com",
+	"cpf": "12345678999",
+	"phone": "123456789012",
+	"birth_date": "10/05/1998",
+	"is_seller": true,
+	"description": "este é um teste bem testado........",
+	"address": {
+		"id": "852a9cec-04b0-4d70-b7f0-03fad94c3f28",
+		"zip_code": "12345678",
+		"state": "SP",
+		"city": "São Paulo",
+		"street": "Uma rua ",
+		"number": "25",
+		"complement": "ultima casa da rua"
+	},
+	"createdAt": "2023-05-04T00:01:15.445Z",
+	"updatedAt": "2023-05-04T00:01:15.445Z",
+	"deletedAt": null
 }
 ```
 
-O campo password não é retornado, os campos is_saller (possui o valor false como default), updatedAt, createdAt e id (do tipo uuid é gerado automaticamente no banco de dados) não são passados na requisição mas são retornados na reposta. Os campos reset_token e reset_token_date também são gerados pela api porém não retornam. O campo image é do tipo File jpg ou png e podem se enviadas varias imagens ao fazer a criação.
+O campo password não é retornado, os campos is_saller (possui o valor false como default), updatedAt, createdAt e id (do tipo uuid é gerado automaticamente no banco de dados) não são passados na requisição mas são retornados na reposta. Os campos reset_token e reset_token_date também são gerados pela api porém não retornam.
 
 ### Possíveis Erros:
 
@@ -676,7 +669,7 @@ Vazio
 POST /posters
 Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
-Content-type: application/json
+Content-type: multipart/form-data
 ```
 
 ### Proteção:
@@ -686,23 +679,50 @@ Content-type: application/json
 ### Exemplo de Corpo da Requisição:
 
 ```json
-{
-  "brand": "Citroën",
-  "model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
-  "year": "2021",
-  "fuel_type": "flex",
-  "kilometers": 190,
-  "color": "verde",
-  "fipe_price": 1120770,
-  "price": 1120770,
-  "description": "descricao",
-  "is_published": false,
-  "images": [
-    {
-      "url": "link"
-    }
-  ]
-}
+posterData: {
+  "brand": "Ford",
+	"model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
+	"year": "2020",
+	"fuel_type": "flex",
+	"kilometers": 190,
+	"color": "verde",
+	"fipe_price": 1120770,
+	"price": 1120770,
+	"description": "descricao",
+	"is_published": false,
+},
+images: [
+  {
+    "fieldname": "image",
+    "originalname": "c4-cactus-cidade-1.jpg",
+    "encoding": "7bit",
+    "mimetype": "image/png",
+    "destination": "upload",
+    "filename": "c4-cactus-cidade-1.jpg",
+    "path": "upload\\c4-cactus-cidade-1.jpg",
+    "size": 20429
+  },
+  {
+    "fieldname": "image",
+    "originalname": "citroen-c4-cactus-2022 (4)-2.jpg",
+    "encoding": "7bit",
+    "mimetype": "image/png",
+    "destination": "upload",
+    "filename": "citroen-c4-cactus-2022 (4)-2.jpg",
+    "path": "upload\\citroen-c4-cactus-2022 (4)-2.jpg",
+    "size": 75988
+  },
+  {
+    "fieldname": "image",
+    "originalname": "images-3.jpg",
+    "encoding": "7bit",
+    "mimetype": "image/png",
+    "destination": "upload",
+    "filename": "images-3.jpg",
+    "path": "upload\\images-3.jpg",
+    "size": 75988
+  }
+]
 ```
 
 ### Exemplo de Response:
@@ -713,28 +733,34 @@ Content-type: application/json
 
 ```json
 {
-	{
-	"brand": "Citroën",
-	"model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
-	"year": "2021",
-	"fuel_type": "flex",
-	"kilometers": 190,
-	"color": "verde",
-	"fipe_price": 1120770,
-	"price": 1120770,
-	"description": "descricao",
-	"is_published": false,
-	"images": [
-		{
-			"url": "link"
-		}
-	],
-	"id": "791d43aa-dca0-47c3-9141-4b91819225f2",
-	"createdAt": "2023-05-05T19:29:15.906Z",
-	"updatedAt": "2023-05-05T19:29:15.906Z"
-}
+  "brand": "Ford",
+  "model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
+  "year": "2020",
+  "fuel_type": "flex",
+  "kilometers": 190,
+  "color": "verde",
+  "fipe_price": 1120770,
+  "price": 1120770,
+  "description": "descricao",
+  "is_published": false,
+  "id": "14247b99-0dd6-46da-9f39-ce5748d62db1",
+  "createdAt": "2023-05-15T19:13:08.274Z",
+  "updatedAt": "2023-05-15T19:13:08.274Z",
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177981/dk3c56fwrh6qpbpe7bda.jpg"
+    },
+    {
+      "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177984/j2qgxlxzruovtdjcqhra.jpg"
+    },
+    {
+      "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177985/zvrpotki4irstsiobjre.jpg"
+    }
+  ]
 }
 ```
+
+O campo image é do tipo File jpg ou png e podem se enviadas varias imagens ao fazer a criação. Os campos id createdAt e updatedAt são gerados automaticamente na criação.
 
 ### Possíveis Erros:
 
@@ -786,45 +812,50 @@ Vazio
 
 ```json
 {
+  "prev": null,
+  "next": null,
+  "count": 1,
+  "data": [
     {
-	"prev": null,
-	"next": null,
-	"count": 1,
-	"data": [
-		{
-			"brand": "Ford",
-			"model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
-			"year": "2020",
-			"fuel_type": "flex",
-			"kilometers": 190,
-			"color": "verde",
-			"fipe_price": 1120770,
-			"price": 1120770,
-			"description": "descricao",
-			"is_published": false,
-			"images": [
-				{
-					"url": "link"
-				}
-			],
-			"id": "791d43aa-dca0-47c3-9141-4b91819225f2",
-			"createdAt": "2023-05-05T19:29:15.906Z",
-			"updatedAt": "2023-05-05T19:29:15.906Z",
-			"user": {
-				"id": "8e52f59c-6702-49ab-b1d7-c1d4685cd4ba",
-				"name": "Teste 2",
-				"email": "teste@hotmail.com",
-				"cpf": "12345678999",
-				"phone": "123456789012",
-				"birth_date": "1998-05-10",
-				"is_seller": true,
-				"description": "este é um teste bem testado........",
-				"createdAt": "2023-05-04T00:01:15.445Z",
-				"updatedAt": "2023-05-04T23:25:35.434Z",
-				"deletedAt": null
-			}
-		}
+      "brand": "Ford",
+      "model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
+      "year": "2020",
+      "fuel_type": "flex",
+      "kilometers": 190,
+      "color": "verde",
+      "fipe_price": 1120770,
+      "price": 1120770,
+      "description": "descricao",
+      "is_published": false,
+      "id": "14247b99-0dd6-46da-9f39-ce5748d62db1",
+      "createdAt": "2023-05-15T19:13:08.274Z",
+      "updatedAt": "2023-05-15T19:13:08.274Z",
+      "images": [
+        {
+          "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177981/dk3c56fwrh6qpbpe7bda.jpg"
+        },
+        {
+          "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177984/j2qgxlxzruovtdjcqhra.jpg"
+        },
+        {
+          "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177985/zvrpotki4irstsiobjre.jpg"
+        }
+      ],
+      "user": {
+        "id": "8e52f59c-6702-49ab-b1d7-c1d4685cd4ba",
+        "name": "Teste 2",
+        "email": "teste@hotmail.com",
+        "cpf": "12345678999",
+        "phone": "123456789012",
+        "birth_date": "1998-05-10",
+        "is_seller": true,
+        "description": "este é um teste bem testado........",
+        "createdAt": "2023-05-04T00:01:15.445Z",
+        "updatedAt": "2023-05-04T23:25:35.434Z",
+        "deletedAt": null
+      }
     }
+  ]
 }
 ```
 
@@ -885,7 +916,7 @@ Vazio
 PATCH /posters/791d43aa-dca0-47c3-9141-4b91819225f3
 Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
-Content-type: application/json
+Content-type: multipart/form-data
 ```
 
 ### Proteção:
@@ -903,7 +934,7 @@ Content-type: application/json
 ### Corpo da Requisição:
 
 ```json
-{
+posterData: {
   "price": 1220770
 }
 ```
@@ -928,14 +959,20 @@ Todos os campos são opcionais. Campos que não podem ser editados: id, createdA
   "price": 1220770,
   "description": "descricao",
   "is_published": false,
+  "id": "14247b99-0dd6-46da-9f39-ce5748d62db1",
+  "createdAt": "2023-05-15T19:13:08.274Z",
+  "updatedAt": "2023-05-16T14:17:44.645Z",
   "images": [
     {
-      "url": "link"
+      "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177981/dk3c56fwrh6qpbpe7bda.jpg"
+    },
+    {
+      "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177984/j2qgxlxzruovtdjcqhra.jpg"
+    },
+    {
+      "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177985/zvrpotki4irstsiobjre.jpg"
     }
-  ],
-  "id": "791d43aa-dca0-47c3-9141-4b91819225f2",
-  "createdAt": "2023-05-05T19:29:15.906Z",
-  "updatedAt": "2023-05-05T21:13:58.320Z"
+  ]
 }
 ```
 
