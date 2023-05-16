@@ -913,7 +913,7 @@ Vazio
 ### Exemplo de Request:
 
 ```
-PATCH /posters/791d43aa-dca0-47c3-9141-4b91819225f3
+PATCH /posters/14247b99-0dd6-46da-9f39-ce5748d62db1
 Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: multipart/form-data
