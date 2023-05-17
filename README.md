@@ -12,7 +12,7 @@ Esta é uma api com o objetivo de gerenciar um e-commerce de venda de automóvei
   - [Instalando Dependências](#31-instalando-dependências)
   - [Variáveis de Ambiente](#32-variáveis-de-ambiente)
   - [Migrations](#33-migrations)
-  - [Scripts](#34-scripts)
+  - [Rodar servidor](#34-rodar-o-servidor-localmente)
 - [Endpoints](#4-endpoints)
 - [Time de Desenvolvimento](#5-time-de-desenvolvimento)
 
@@ -65,19 +65,19 @@ Diagrama DER da API representando as relações entre as tabelas do banco de dad
 
 ### 3.1. Instalando Dependências
 
-- Faça um clone do projeto na sua máquina:
+Faça um clone do projeto na sua máquina:
 
 ```shell
 git clone git@github.com:E-Commerce-M6/back_end.git
 ```
 
-- Entre na pasta do arquivo que clonou:
+Entre na pasta do arquivo que clonou:
 
 ```shell
 code .
 ```
 
-- instale as dependências:
+Instale as dependências:
 
 ```shell
 yarn
@@ -89,21 +89,9 @@ ou
 npm i
 ```
 
-- Rodar o aplicativo:
-
-```shell
-yarn dev
-```
-
-ou
-
-```shell
-npm run dev
-```
-
 ### 3.2. Variáveis de Ambiente
 
-Em seguida, crie um arquivo .env, copiando o formato do arquivo .env.example:
+Em seguida, crie um arquivo .env copiando o formato do arquivo .env.example e o preencha de acordo:
 
 ```shell
 cp .env.example .env
@@ -120,7 +108,21 @@ yarn typeorm migration:run -d src/data-source.ts
 ou
 
 ```shell
-npm typeorm migration:run -d src/data-source.ts
+npm run typeorm migration:run -- -d src/data-source.ts
+```
+
+### 3.4. Rodar o servidor
+
+Para rodar localmente `(porta 3099)` execute o comando:
+
+```shell
+yarn dev
+```
+
+ou
+
+```shell
+npm run dev
 ```
 
 ---
@@ -139,27 +141,36 @@ npm typeorm migration:run -d src/data-source.ts
 
 ---
 
+<h4 align="center"><strong>🚨 Importante 🚨</strong></h4>
+Todas as rotas que recebem um <strong>id</strong> como parâmetro estão sujeitas a verificação do formato desse id. Não sendo um <strong>uuid</strong> será retornado um erro.
+
+| Código do Erro  | Descrição    |
+| --------------- | ------------ |
+| 400 Bad Request | "Invalid id" |
+
 ## 1. **Users**
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
 
-[Endpoints](#4-endpoints)
+[Retornar aos Endpoints](#4-endpoints)
 
 ### Endpoints
 
-| Método | Rota                   | Descrição                                                     |
-| ------ | ---------------------- | ------------------------------------------------------------- |
-| POST   | /api/users             | Criação de um usuário.                                        |
-| GET    | /api/users/profile     | Lista o usuário logado.                                       |
-| GET    | /api/users/:id/posters | Lista os posters de um usuário.                               |
-| PATCH  | /api/users/:user_id    | Editar as informações do usuário usando seu ID como parâmetro |
-| DELETE | /api/users/:user_id    | Deletar usuário usando seu ID como parâmetro                  |
+| Método | Rota                    | Descrição                                                     |
+| ------ | ----------------------- | ------------------------------------------------------------- |
+| POST   | /users                  | Criação de um usuário.                                        |
+| GET    | /users/profile          | Lista o usuário logado.                                       |
+| GET    | /users/:user_id/posters | Lista os posters de um usuário.                               |
+| PATCH  | /users/:user_id         | Editar as informações do usuário usando seu ID como parâmetro |
+| DELETE | /users/:user_id         | Deletar usuário usando seu ID como parâmetro                  |
 
 ---
 
 ### 1.1. **Criação de Usuário**
 
-### `POST /api/users/`
+[Retornar aos Endpoints](#4-endpoints)
+
+### `POST /users`
 
 ### Exemplo de Request:
 
@@ -193,10 +204,10 @@ Content-type: application/json
 }
 ```
 
-##### Exemplo de Response:
+### Exemplo de Response:
 
 ```
-201
+201 CREATED
 ```
 
 ```
@@ -224,7 +235,7 @@ Content-type: application/json
 }
 ```
 
-O campo password não é retornado, os campos is_saller (possui o valor false como default), updatedAt, createdAt e id (do tipo uuid é gerado automaticamente no banco de dados) não são passados na requisição mas são retornados na reposta. Os campos reset_token e reset_token_date também são gerados pela api porém não retornam.
+O campo password não é retornado, os campos is_saller (possui o valor false como default), updatedAt, createdAt e id (do tipo uuid é gerado automaticamente no banco de dados) não são passados na requisição mas são retornados na reposta.
 
 ### Possíveis Erros:
 
@@ -236,12 +247,14 @@ O campo password não é retornado, os campos is_saller (possui o valor false co
 
 ### 1.2. **Listando Usuário logado**
 
+[Retornar aos Endpoints](#4-endpoints)
+
 ### `GET /users/profile`
 
 ### Exemplo de Request:
 
 ```
-GET /api/users
+GET /users
 Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: None
@@ -249,7 +262,7 @@ Content-type: None
 
 ### Proteção:
 
-O usuário precisa estar logado.
+- O usuário precisa estar logado.
 
 ### Corpo da Requisição:
 
@@ -260,7 +273,7 @@ Vazio
 ### Exemplo de Response:
 
 ```
-200 No content
+200 OK
 ```
 
 ```json
@@ -296,14 +309,16 @@ Vazio
 
 ---
 
-### 1.3. **Listar posters de um usuário **
+### 1.3. **Listar posters de um usuário**
 
-### `GET /api/users/<user_id>/posters`
+[Retornar aos Endpoints](#4-endpoints)
+
+### `GET /users/:user_id/posters`
 
 ### Exemplo de Request:
 
 ```
-GET/users/8e52f59c-6702-49ab-b1d7-c1d4685cd4ba/posters
+GET /users/8e52f59c-6702-49ab-b1d7-c1d4685cd4ba/posters
 Host: https://motorshop-api.onrender.com
 Authorization: None
 Content-type: None
@@ -340,7 +355,7 @@ Vazio
     "phone": "123456789012",
     "birth_date": "1998-05-10",
     "is_seller": true,
-    "description": "este é um teste bem testado........",
+    "description": "Este é um teste bem testado...",
     "address": {
       "id": "852a9cec-04b0-4d70-b7f0-03fad94c3f28",
       "zip_code": "12345678",
@@ -368,7 +383,7 @@ Vazio
 
 ### 1.4. **Editar usuário logado**
 
-### `PATCH /users/<user_id>/`
+### `PATCH /users/:user_id`
 
 ### Exemplo de Request:
 
@@ -381,9 +396,9 @@ Content-type: application/json
 
 ### Proteção:
 
-##### O usuário precisa estar logado.
+- O usuário precisa estar logado.
 
-##### O usuário precisa ser o dono da conta.
+- O usuário precisa ser o dono da conta.
 
 ### Parâmetros da Requisição:
 
@@ -399,7 +414,7 @@ Content-type: application/json
 }
 ```
 
-Todos os campos são opcionais. Campos que não podem ser editados: id, createdAt, UpdatedAt, deletedAt.
+Todos os campos são opcionais. Campos que não podem ser editados: id, createdAt, updatedAt, deletedAt.
 
 ### Exemplo de Response:
 
@@ -437,13 +452,15 @@ Todos os campos são opcionais. Campos que não podem ser editados: id, createdA
 | Código do Erro   | Descrição       |
 | ---------------- | --------------- |
 | 401 Unauthorized | "Invalid token" |
-| 404 Not Found    | "not found"     |
+| 404 Not Found    | "Not found"     |
 
 ---
 
 ### 1.5. **Deletar usuário logado**
 
-### `DELETE /users/<user_id>`
+[Retornar aos Endpoints](#4-endpoints)
+
+### `DELETE /users/:user_id`
 
 ### Exemplo de Request:
 
@@ -456,9 +473,9 @@ Content-type: None
 
 ### Proteção:
 
-##### O usuário precisa estar logado.
+- O usuário precisa estar logado.
 
-##### O usuário precisa ser o dono da conta.
+- O usuário precisa ser o dono da conta.
 
 ### Parâmetros da Requisição:
 
@@ -475,7 +492,7 @@ Vazio
 ### Exemplo de Response:
 
 ```
-204 No content
+204 NO CONTENT
 ```
 
 ```json
@@ -487,7 +504,7 @@ Vazio
 | Código do Erro   | Descrição       |
 | ---------------- | --------------- |
 | 401 Unauthorized | "Invalid token" |
-| 404 Not Found    | "not found"     |
+| 404 Not Found    | "Not found"     |
 
 ---
 
@@ -495,7 +512,7 @@ Vazio
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
 
-[Endpoints](#4-endpoints)
+[Retornar aos Endpoints](#4-endpoints)
 
 ### Endpoints
 
@@ -508,7 +525,7 @@ Vazio
 ### Exemplo de Request:
 
 ```
-POST/login
+POST /login
 Host: https://motorshop-api.onrender.com
 Authorization: None
 Content-type: application/json
@@ -526,7 +543,7 @@ Content-type: application/json
 ### Exemplo de Response:
 
 ```
-200 Ok
+200 OK
 ```
 
 ```json
@@ -548,16 +565,20 @@ Content-type: application/json
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
 
-[Endpoints](#4-endpoints)
+[Retornar aos Endpoints](#4-endpoints)
 
 ### Endpoints
 
 | Método | Rota                       | Descrição                                                                 |
 | ------ | -------------------------- | ------------------------------------------------------------------------- |
-| POST   | /resetPassword             | envia um email para o email cadastrado com um token para o reset da senha |
-| PATCH  | /resetPassword/:resetToken | faz o update da senha                                                     |
+| POST   | /resetPassword             | Envia um email para o email cadastrado com um token para o reset da senha |
+| PATCH  | /resetPassword/:resetToken | Faz o update da senha                                                     |
 
 ### 3.1. **Envio do email com o resetToken**
+
+[Retornar aos Endpoints](#4-endpoints)
+
+### `POST /resetPassword`
 
 ### Exemplo de Request:
 
@@ -579,7 +600,7 @@ Content-type: application/json
 ### Exemplo de Response:
 
 ```
-200 Created
+200 OK
 ```
 
 ```json
@@ -599,6 +620,8 @@ Content-type: application/json
 
 ### 3.2. **Reset da senha**
 
+[Retornar aos Endpoints](#4-endpoints)
+
 ### `PATCH /resetPassword/:resetToken`
 
 ### Exemplo de Request:
@@ -612,9 +635,9 @@ Content-type: None
 
 ### Parâmetros da Requisição:
 
-| Parâmetro  | Tipo   | Descrição                                 |
-| ---------- | ------ | ----------------------------------------- |
-| resetToken | string | Identificador único para o reset da senha |
+| Parâmetro  | Tipo   | Descrição                   |
+| ---------- | ------ | --------------------------- |
+| resetToken | string | Token para o reset da senha |
 
 ### Exemplo de Corpo da Requisição:
 
@@ -636,10 +659,11 @@ Vazio
 
 ### Possíveis Erros:
 
-| Código do Erro   | Descrição                                                               |
-| ---------------- | ----------------------------------------------------------------------- |
-| 401 Unauthorized | "Data do token expirada, por favor solicite o envio ao email novamente" |
-| 404 Not Found    | "User not found"                                                        |
+| Código do Erro   | Descrição                           |
+| ---------------- | ----------------------------------- |
+| 401 Unauthorized | "Token expired, make a new request" |
+| 401 Unauthorized | "Invalid token"                     |
+| 404 Not Found    | "User not found"                    |
 
 ---
 
@@ -647,7 +671,7 @@ Vazio
 
 [ Voltar para o topo ](#tabela-de-conteúdos)
 
-[Endpoints](#4-endpoints)
+[Retornar aos Endpoints](#4-endpoints)
 
 ### Endpoints
 
@@ -663,6 +687,10 @@ Vazio
 
 ### 4.1. **Criação de um poster**
 
+[Retornar aos Endpoints](#4-endpoints)
+
+### `POST /posters`
+
 ### Exemplo de Request:
 
 ```
@@ -674,13 +702,13 @@ Content-type: multipart/form-data
 
 ### Proteção:
 
-##### O usuário precisa estar logado.
+- O usuário precisa estar logado.
 
 ### Exemplo de Corpo da Requisição:
 
 ```json
 posterData: {
-  "brand": "Ford",
+  "brand": "Citroën",
 	"model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
 	"year": "2020",
 	"fuel_type": "flex",
@@ -691,7 +719,7 @@ posterData: {
 	"description": "descricao",
 	"is_published": false,
 },
-images: [
+[
   {
     "fieldname": "image",
     "originalname": "c4-cactus-cidade-1.jpg",
@@ -728,12 +756,12 @@ images: [
 ### Exemplo de Response:
 
 ```
-201 Created
+201 CREATED
 ```
 
 ```json
 {
-  "brand": "Ford",
+  "brand": "Citroën",
   "model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
   "year": "2020",
   "fuel_type": "flex",
@@ -760,20 +788,22 @@ images: [
 }
 ```
 
-O campo image é do tipo File jpg ou png e podem se enviadas varias imagens ao fazer a criação. Os campos id createdAt e updatedAt são gerados automaticamente na criação.
+O campo image é do tipo File image/\*\* e podem ser enviadas varias imagens ao fazer a criação. Os campos id, createdAt e updatedAt são gerados automaticamente na criação. O campo is_published possui valor default false.
 
 ### Possíveis Erros:
 
 | Código do Erro   | Descrição                                                                                                                                                                                                                                         |
 | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 400 Bad Request  | {"brand": ["Required"],"model": ["Required"],"year": ["Required"],"fuel_type": ["Required"],"kilometers": ["Required"],"color": ["Required"],"fipe_price": ["Required"],"price": ["Required"],"description": ["Required"],"images": ["Required"]} |
+| 400 Bad Request  | "Expected posterData object"                                                                                                                                                                                                                      |
 | 401 Unauthorized | "Invalid token"                                                                                                                                                                                                                                   |
-| 404 Not Found    | "User not found"                                                                                                                                                                                                                                  |
-| 403 Forbidden    | "Not Authorization"                                                                                                                                                                                                                               |
+| 403 Forbidden    | "Must be a seller to perform this action"                                                                                                                                                                                                         |
 
 ---
 
 ### 4.2. **Listando posters**
+
+[Retornar aos Endpoints](#4-endpoints)
 
 ### `GET /posters`
 
@@ -797,6 +827,9 @@ Content-type: None
 - brand
 - year
 - color
+- published
+- page
+- perPage
 
 ### Corpo da Requisição:
 
@@ -817,7 +850,7 @@ Vazio
   "count": 1,
   "data": [
     {
-      "brand": "Ford",
+      "brand": "Citroën",
       "model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
       "year": "2020",
       "fuel_type": "flex",
@@ -832,12 +865,15 @@ Vazio
       "updatedAt": "2023-05-15T19:13:08.274Z",
       "images": [
         {
+          "id": 1,
           "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177981/dk3c56fwrh6qpbpe7bda.jpg"
         },
         {
+          "id": 2,
           "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177984/j2qgxlxzruovtdjcqhra.jpg"
         },
         {
+          "id": 3,
           "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177985/zvrpotki4irstsiobjre.jpg"
         }
       ],
@@ -854,7 +890,8 @@ Vazio
         "updatedAt": "2023-05-04T23:25:35.434Z",
         "deletedAt": null
       }
-    }
+    },
+    ...
   ]
 }
 ```
@@ -862,6 +899,8 @@ Vazio
 ---
 
 ### 4.3. **Listando posters filters**
+
+[Retornar aos Endpoints](#4-endpoints)
 
 ### `GET /posters/filters`
 
@@ -876,11 +915,16 @@ Content-type: None
 
 ### Query params
 
-- models
-- colors
-- brands
-- years
-- fuel_types
+- model
+- priceMAX
+- priceMIN
+- fuel
+- kmMAX
+- kmMIN
+- brand
+- year
+- color
+- published
 
 ### Corpo da Requisição:
 
@@ -908,7 +952,9 @@ Vazio
 
 ### 4.4. **Editar poster**
 
-### `PATCH /users/<poster_id>`
+[Retornar aos Endpoints](#4-endpoints)
+
+### `PATCH /posters/:poster_id`
 
 ### Exemplo de Request:
 
@@ -921,9 +967,9 @@ Content-type: multipart/form-data
 
 ### Proteção:
 
-##### O usuário precisa estar logado.
+- O usuário precisa estar logado.
 
-##### O usuário precisa ser o dono do poster.
+- O usuário precisa ser o dono do poster.
 
 ### Parâmetros da Requisição:
 
@@ -936,10 +982,23 @@ Content-type: multipart/form-data
 ```json
 posterData: {
   "price": 1220770
-}
+},
+[
+  {
+    "fieldname": "image",
+    "originalname": "images-3.jpg",
+    "encoding": "7bit",
+    "mimetype": "image/png",
+    "destination": "upload",
+    "filename": "images-3.jpg",
+    "path": "upload\\images-3.jpg",
+    "size": 75988
+  }
+]
+
 ```
 
-Todos os campos são opcionais. Campos que não podem ser editados: id, createdAt, UpdatedAt.
+Todos os campos são opcionais. Campos que não podem ser editados: id, createdAt, updatedAt.
 
 ### Exemplo de Response:
 
@@ -949,7 +1008,7 @@ Todos os campos são opcionais. Campos que não podem ser editados: id, createdA
 
 ```json
 {
-  "brand": "Ford",
+  "brand": "Citroën",
   "model": "C4 CACTUS Rip Curl 1.6 16V Flex Aut.",
   "year": "2020",
   "fuel_type": "flex",
@@ -965,12 +1024,6 @@ Todos os campos são opcionais. Campos que não podem ser editados: id, createdA
   "images": [
     {
       "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177981/dk3c56fwrh6qpbpe7bda.jpg"
-    },
-    {
-      "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177984/j2qgxlxzruovtdjcqhra.jpg"
-    },
-    {
-      "url": "https://res.cloudinary.com/dqyc6s637/image/upload/v1684177985/zvrpotki4irstsiobjre.jpg"
     }
   ]
 }
@@ -978,21 +1031,25 @@ Todos os campos são opcionais. Campos que não podem ser editados: id, createdA
 
 ### Possíveis Erros:
 
-| Código do Erro   | Descrição          |
-| ---------------- | ------------------ |
-| 401 Unauthorized | "Invalid token"    |
-| 404 Not Found    | "Poster not found" |
+| Código do Erro   | Descrição                                 |
+| ---------------- | ----------------------------------------- |
+| 401 Unauthorized | "Invalid token"                           |
+| 404 Not Found    | "Poster not found"                        |
+| 403 Forbidden    | "Must be a seller to perform this action" |
+| 403 Forbidden    | "Must be owner to perform this action"    |
 
 ---
 
 ### 4.5. **Deletar poster**
 
-### `DELETE /posters/<poster_id>`
+[Retornar aos Endpoints](#4-endpoints)
+
+### `DELETE /posters/:poster_id`
 
 ### Exemplo de Request:
 
 ```
-DELETE/posters/791d43aa-dca0-47c3-9141-4b91819225f3
+DELETE /posters/791d43aa-dca0-47c3-9141-4b91819225f3
 Host: https://motorshop-api.onrender.com
 Authorization: Bearer token
 Content-type: None
@@ -1000,9 +1057,9 @@ Content-type: None
 
 ### Proteção:
 
-##### O usuário precisa estar logado.
+- O usuário precisa estar logado.
 
-##### O usuário precisa ser o dono do poster.
+- O usuário precisa ser o dono do poster.
 
 ### Parâmetros da Requisição:
 
@@ -1019,7 +1076,7 @@ Vazio
 ### Exemplo de Response:
 
 ```
-204 No content
+204 NO CONTENT
 ```
 
 ```json
@@ -1028,10 +1085,12 @@ Vazio
 
 ### Possíveis Erros:
 
-| Código do Erro   | Descrição          |
-| ---------------- | ------------------ |
-| 401 Unauthorized | "Invalid token"    |
-| 404 Not Found    | "Poster not found" |
+| Código do Erro   | Descrição                                 |
+| ---------------- | ----------------------------------------- |
+| 401 Unauthorized | "Invalid token"                           |
+| 403 Forbidden    | "Must be a seller to perform this action" |
+| 403 Forbidden    | "Must be owner to perform this action"    |
+| 404 Not Found    | "Poster not found"                        |
 
 ---
 
@@ -1054,7 +1113,9 @@ Vazio
 
 ### 5.1. **Criação de comment**
 
-### POST `/posters/<poster_id>/comments`
+[Retornar aos Endpoints](#4-endpoints)
+
+### `POST /posters/:poster_id/comments`
 
 ### Exemplo de Request:
 
@@ -1067,7 +1128,7 @@ Content-type: application/json
 
 ### Proteção:
 
-##### O usuário precisa estar logado.
+- O usuário precisa estar logado.
 
 ### Parâmetros da Requisição:
 
@@ -1086,7 +1147,7 @@ Content-type: application/json
 ### Exemplo de Response:
 
 ```
-201 Created
+201 CREATED
 ```
 
 ```json
@@ -1122,7 +1183,9 @@ Content-type: application/json
 
 ### 5.2. **Listar comments de um poster**
 
-### GET `/posters/:poster_id/comments`
+[Retornar aos Endpoints](#4-endpoints)
+
+### `GET /posters/:poster_id/comments`
 
 ### Exemplo de Request:
 
@@ -1148,7 +1211,7 @@ Vazio
 ### Exemplo de Response:
 
 ```
-200 Created
+200 OK
 ```
 
 ```json
@@ -1170,7 +1233,8 @@ Vazio
       "deletedAt": null
     },
     "createdAt": "2023-05-05T21:44:09.371Z"
-  }
+  },
+  ...
 ]
 ```
 
@@ -1184,7 +1248,9 @@ Vazio
 
 ### 5.3. **Editar comment**
 
-### `PATCH /comments/<comment_id>`
+[Retornar aos Endpoints](#4-endpoints)
+
+### `PATCH /comments/:comment_id`
 
 ### Exemplo de Request:
 
@@ -1197,9 +1263,9 @@ Content-type: application/json
 
 ### Proteção:
 
-##### O usuário precisa estar logado.
+- O usuário precisa estar logado.
 
-##### O usuário precisa ser o dono do comentário.
+- O usuário precisa ser o dono do comentário.
 
 ### Parâmetros da Requisição:
 
@@ -1255,7 +1321,9 @@ Todos os campos são opcionais. Campos que não podem ser editados: id, createdA
 
 ### 4.5. **Delete comment**
 
-### `DELETE /comments/<poster_id>`
+[Retornar aos Endpoints](#4-endpoints)
+
+### `DELETE /comments/:comment_id`
 
 ### Exemplo de Request:
 
@@ -1268,9 +1336,9 @@ Content-type: None
 
 ### Proteção:
 
-##### O usuário precisa estar logado.
+- O usuário precisa estar logado.
 
-##### O usuário precisa ser o dono do comentário.
+- O usuário precisa ser o dono do comentário.
 
 ### Parâmetros da Requisição:
 
@@ -1287,7 +1355,7 @@ Vazio
 ### Exemplo de Response:
 
 ```
-204 No content
+204 NO CONTENT
 ```
 
 ```json
