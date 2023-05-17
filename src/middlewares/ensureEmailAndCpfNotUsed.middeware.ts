@@ -21,8 +21,6 @@ const ensureEmailOrCpfNotUsedMiddleware = async (
     })
     .getOne();
 
-  console.log(foundUser);
-
   if (foundUser) {
     throw new AppError("Email or CPF already used", 409);
   }
