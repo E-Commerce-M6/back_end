@@ -2,7 +2,6 @@ import QueryString from "qs";
 import AppDataSource from "../../data-source";
 import { FuelType, Poster } from "../../entities/poster.entity";
 import { FindManyOptions, Repository } from "typeorm";
-import { AppError } from "../../errors/AppError";
 import { IPosterPagination } from "../../interfaces/posters.interfaces";
 import { posterWithUserReturnSchema, posterQuerySchema } from "../../schemas/posters.schemas";
 
@@ -66,9 +65,6 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
     },
     order: {
       createdAt: "DESC",
-      images: {
-        id: "ASC",
-      },
     },
   };
 
@@ -78,7 +74,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
     delete findOptions.where;
   }
 
-  const posterCount = await posterRepository
+  const [posters, posterCount] = await posterRepository
     .createQueryBuilder("poster")
     .setFindOptions(findOptions)
     .andWhere("poster.price <= :priceValueMAX", { priceValueMAX: priceValueMAX })
@@ -86,24 +82,7 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
     .andWhere("poster.kilometers <= :kmValueMAX", { kmValueMAX: kmValueMAX })
     .andWhere("poster.kilometers >= :kmValueMIN", { kmValueMIN: kmValueMIN })
     .andWhere("poster.model ILIKE :model", { model: `%${model || ""}%` })
-    .getCount();
-
-  if (realPage > Math.ceil(posterCount / realTake) && realPage > 1) {
-    throw new AppError("Invalid page", 400);
-  }
-
-  const posters = await posterRepository
-    .createQueryBuilder("poster")
-    .setFindOptions(findOptions)
-    .andWhere("poster.price <= :priceValueMAX", { priceValueMAX: priceValueMAX })
-    .andWhere("poster.price >= :priceValueMIN", { priceValueMIN: priceValueMIN })
-    .andWhere("poster.kilometers <= :kmValueMAX", { kmValueMAX: kmValueMAX })
-    .andWhere("poster.kilometers >= :kmValueMIN", { kmValueMIN: kmValueMIN })
-    .andWhere("poster.model ILIKE :model", { model: `%${model || ""}%` })
-    .skip(findOptions.skip)
-    .take(findOptions.take)
-    .leftJoinAndSelect("poster.user", "user")
-    .getMany();
+    .getManyAndCount();
 
   const getQuery = () =>
     Object.keys(q)
@@ -129,7 +108,9 @@ const listPosterService = async (query: QueryString.ParsedQs): Promise<IPosterPa
     prev: prevPage,
     next: nextPage,
     count: posterCount,
-    data: posters.map((poster) => posterWithUserReturnSchema.parse(poster)),
+    data: posters.map((poster) => {
+      return posterWithUserReturnSchema.parse(poster);
+    }),
   };
 };
 

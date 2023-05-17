@@ -1,8 +1,10 @@
 import { Router } from "express";
 import {
   createUserController,
+  deleteUserController,
   getUserByTokenController,
   listPosterByUserController,
+  updateUserController,
 } from "../controllers/users";
 import {
   ensureAuthMiddleware,
@@ -13,8 +15,6 @@ import {
   ensureUserOwnerMiddleware,
 } from "../middlewares";
 import { userCreateSchema, userUpdateSchema } from "../schemas/users.schemas";
-import updateUserController from "../controllers/users/updateUser.controller";
-import deleteUserController from "./../controllers/users/deleteUser.controller";
 
 const usersRoutes: Router = Router();
 

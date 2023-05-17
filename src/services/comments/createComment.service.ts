@@ -1,5 +1,4 @@
 import { Repository } from "typeorm";
-
 import AppDataSource from "../../data-source";
 import { ICommentCreateSchema, ICommentReturnSchema } from "../../interfaces/comments.interface";
 import { Comment } from "../../entities/comment.entity";
