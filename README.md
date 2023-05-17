@@ -12,7 +12,7 @@ Esta é uma api com o objetivo de gerenciar um e-commerce de venda de automóvei
   - [Instalando Dependências](#31-instalando-dependências)
   - [Variáveis de Ambiente](#32-variáveis-de-ambiente)
   - [Migrations](#33-migrations)
-  - [Rodar servidor](#34-rodar-o-servidor-localmente)
+  - [Rodar servidor localmente](#34-rodar-o-servidor)
 - [Endpoints](#4-endpoints)
 - [Time de Desenvolvimento](#5-time-de-desenvolvimento)
 
