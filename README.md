@@ -43,7 +43,7 @@ Visão geral do projeto, um pouco das tecnologias usadas.
 
 #### URL base da aplicação rodando localmente: http://localhost:3099
 
-#### URL base do da aplicação: https://motorshop-api.onrender.com
+#### URL base do deploy da aplicação: https://motorshop-api.onrender.com
 
 ---
 
