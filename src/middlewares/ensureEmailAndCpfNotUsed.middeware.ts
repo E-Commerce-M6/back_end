@@ -14,8 +14,11 @@ const ensureEmailOrCpfNotUsedMiddleware = async (
 
   const foundUser = await userRepository
     .createQueryBuilder("user")
-    .where("user.email = :email", { email: userEmail })
-    .orWhere("user.cpf = :cpf", { cpf: userCpf })
+    .where("user.id != :id AND (user.email = :email OR user.cpf = :cpf)", {
+      id: req.user.id,
+      email: userEmail,
+      cpf: userCpf,
+    })
     .getOne();
 
   if (foundUser) {

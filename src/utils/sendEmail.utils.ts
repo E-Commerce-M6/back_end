@@ -51,8 +51,6 @@ const resetPasswordTemplate = (
   const resetPasswordPage =
     process.env.NODE_ENV == "prod" ? process.env.BASEURL_PROD : "http://localhost:3000";
 
-  console.log(resetPasswordPage);
-
   const email = {
     body: {
       greeting: "Olá",

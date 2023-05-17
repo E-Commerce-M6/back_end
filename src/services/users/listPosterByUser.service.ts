@@ -66,9 +66,6 @@ const listPosterByUserService = async (
     },
     order: {
       createdAt: "DESC",
-      images: {
-        id: "ASC",
-      },
     },
   });
 
@@ -80,16 +77,15 @@ const listPosterByUserService = async (
       ? null
       : `http://localhost:3000/contact?page=${realPage + 1}&perPage=${realTake}`;
 
-  if (realPage > Math.ceil(userPostListCount / realTake) && realPage > 1) {
-    throw new AppError("Invalid page", 400);
-  }
-
   return {
     prev: prevPage,
     next: nextPage,
     count: userPostListCount,
     sellerData: userReturnSchema.parse(findedUser),
-    data: userPostList,
+    data: userPostList.map((poster) => {
+      poster.images.sort((a, b) => a.id - b.id);
+      return poster;
+    }),
   };
 };
 

@@ -21,6 +21,7 @@ const posterReturnSchema = posterCreateSchema.extend({
   updatedAt: z.date().nullish(),
   images: z
     .object({
+      id: z.number(),
       url: z.string(),
     })
     .array(),
@@ -28,9 +29,14 @@ const posterReturnSchema = posterCreateSchema.extend({
 
 const posterUpdateSchema = posterCreateSchema.partial();
 
-const posterWithUserReturnSchema = posterReturnSchema.extend({
-  user: userReturnSchema.omit({ address: true }),
-});
+const posterWithUserReturnSchema = posterReturnSchema
+  .extend({
+    user: userReturnSchema.omit({ address: true }),
+  })
+  .transform((data) => {
+    data.images.sort((a, b) => a.id - b.id);
+    return data;
+  });
 
 const queryPaginateSchema = z
   .object({
