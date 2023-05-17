@@ -13,7 +13,7 @@ const ensureResetTokenValidMiddleware = async (req: Request, res: Response, next
   jwt.verify(token, process.env.SECRET_KEY!, (error, decoded: any) => {
     if (error) {
       if (error.message == "jwt expired") {
-        throw new AppError("Request expired, make a new request", 401);
+        throw new AppError("Token expired, make a new request", 401);
       }
       if (error.message == "jwt malformed") {
         throw new AppError("Invalid token", 401);

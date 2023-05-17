@@ -20,7 +20,7 @@ const ensurePostOwnerMiddleware = async (
   });
 
   if (foundPoster.user.id !== req.user.id) {
-    throw new AppError("Must be owner to update the poster", 403);
+    throw new AppError("Must be owner to perform this action", 403);
   }
 
   return next();

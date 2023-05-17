@@ -39,6 +39,7 @@ usersRoutes.patch(
   ensureDataIsValidMiddleware(userUpdateSchema),
   ensureUserExistsMiddleware,
   ensureUserOwnerMiddleware,
+  ensureEmailOrCpfNotUsedMiddleware,
   updateUserController
 );
 usersRoutes.delete(
