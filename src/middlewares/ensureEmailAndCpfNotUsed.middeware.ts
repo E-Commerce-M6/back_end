@@ -12,14 +12,26 @@ const ensureEmailOrCpfNotUsedMiddleware = async (
   const { email: userEmail, cpf: userCpf } = req.body;
   const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
-  const foundUser = await userRepository
-    .createQueryBuilder("user")
-    .where("user.id != :id AND (user.email = :email OR user.cpf = :cpf)", {
-      id: req.user.id,
-      email: userEmail,
-      cpf: userCpf,
-    })
-    .getOne();
+  let foundUser;
+
+  if (req.user) {
+    foundUser = await userRepository
+      .createQueryBuilder("user")
+      .where("user.id != :id AND (user.email = :email OR user.cpf = :cpf)", {
+        id: req.user.id,
+        email: userEmail,
+        cpf: userCpf,
+      })
+      .getOne();
+  } else {
+    foundUser = await userRepository
+      .createQueryBuilder("user")
+      .where("user.email = :email OR user.cpf = :cpf", {
+        email: userEmail,
+        cpf: userCpf,
+      })
+      .getOne();
+  }
 
   if (foundUser) {
     throw new AppError("Email or CPF already used", 409);
